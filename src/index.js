@@ -1,1 +1,1 @@
-console.log('ehhh')
+import {projectFactory} from './project';
