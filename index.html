@@ -1,9 +1,129 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Todo list</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"><script defer src="index.bundle.js"></script></head>
-  <body>
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <title>
+    Todo list
+  </title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+    integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+<script defer src="index.bundle.js"></script></head>
+
+<body>
+
+  <header class="main-header">
+    <div><i class="fas fa-bars fa-lg"></i></div>
+    <h1>Do things</h1>
+    <div class="new-project btn"><i class="fas fa-plus fa-lg"></i><span>New project</span></div>
+  </header>
+
+  <div class="wrapper">
+    <nav class="navbar">
+      <ul class="navbar-list fa-ul">
+        <li><span class="fa-li"><i class="fas fa-calendar-day"></i></span>Today</li>
+        <li><span class="fa-li"><i class="far fa-calendar-alt"></i></span>Upcomming</li>
+        <li><span class="fa-li"><i class="fas fa-exclamation"></i></span>Priority</li>
+      </ul>
+      <div class="projects-list-wrapper">
+        <h2>Projects</h2>
+        <ul class="projects-list">
+          <li>
+            <span class="fa-stack fa-2x">
+              <i class="far fa-circle fa-stack-2x"></i>
+              <i class="fas fa-angle-right fa-stack-1x"></i>
+            </span>
+            <i class="fas fa-tasks"></i>
+            Project1
+          </li>
+          <ul>
+            <li><i class="far fa-circle fa-sm hight"></i>Todo1</li>
+            <li><i class="far fa-circle fa-sm medium"></i>Todo2</li>
+            <li><i class="far fa-circle fa-sm low"></i>Todo3</li>
+          </ul>
+          <li>
+            <span class="fa-stack fa-2x">
+              <i class="far fa-circle fa-stack-2x"></i>
+              <i class="fas fa-angle-right fa-stack-1x"></i>
+            </span>
+            <i class="fas fa-tasks"></i>
+            Project2
+          </li>
+          <li>
+            <span class="fa-stack fa-2x">
+              <i class="far fa-circle fa-stack-2x"></i>
+              <i class="fas fa-angle-right fa-stack-1x"></i>
+            </span>
+            <i class="fas fa-tasks"></i>
+            Project1
+          </li>
+        </ul>
+
+        <div class="default-btn btn"> Set Default</div>
+      </div>
+    </nav>
+    <section class="project">
+      <header class="project-header">
+        <h2 class="project-title">Project1</h2>
+        <span>Due Date</span>
+      </header>
+      <section class="project-content">
+        <p class="project-description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo nulla. Aenean non nisi vel tellus
+          dignissim scelerisque eget sed erat. Integer dignissim turpis semper dui dapibus condimentum. Donec ut tortor
+          orci. Vivamus ornare lacus dui, nec facilisis leo luctus nec. Nullam egestas convallis iaculis.
+        </p>
+        <div class="settings-bar">
+          <ul>
+            <span class="sort-label">Sort by</span>
+            <li>Created</li>
+            <li>Priority</li>
+            <li>Due time</li>
+          </ul>
+          <span class="icon-group">
+            <i class="fas fa-grip-horizontal"></i>
+            <i class="fas fa-grip-lines"></i>
+          </span>
+        </div>
+        <section class="todo-list">
+          <article class="todo">
+            <header>
+              <span><i class="far fa-circle fa-sm hight"></i></span>
+              <h3 class="todo-title">Todo</h3>
+              <span class="due-date">00/00/2020 12:00</span>
+            </header>
+            <div class="description-wrapper">
+              <p class="description">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo nulla. Aenean non nisi vel
+                tellus
+                dignissim scelerisque eget sed erat. Integer dignissim turpis semper dui dapibus condimentum. Donec ut
+                tortor
+                orci. Vivamus ornare lacus dui, nec facilisis leo luctus nec. Nullam egestas convallis iaculis.
+              </p>
+            </div>
+          </article>
+          <article class="todo">
+            <header>
+              <span><i class="far fa-circle fa-sm low"></i></span>
+              <h3 class="todo-title">Todo</h3>
+              <span class="due-date">00/00/2020 12:00</span>
+            </header>
+            <div class="description-wrapper">
+              <p class="description">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo nulla. Aenean non nisi vel
+                tellus
+                dignissim scelerisque eget sed erat. Integer dignissim turpis semper dui dapibus condimentum. Donec ut
+                tortor
+                orci. Vivamus ornare lacus dui, nec facilisis leo luctus nec. Nullam egestas convallis iaculis.
+              </p>
+            </div>
+          </article>
+        </section>
+      </section>
+    </section>
+
+  </div>
+
+</body>
+
 </html>
