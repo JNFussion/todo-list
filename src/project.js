@@ -1,18 +1,53 @@
-const todoFactory = (title, description, dueDate, priority) => {
-  return {title: title, description: description, dueDate: dueDate, priority: priority, checked: false, created_at, updated_at};
+import { format, isFuture, isToday } from "date-fns";
+import isValid from "date-fns/isValid";
+
+
+const proto = (title, description, priority, dueDate, created_at) => {
+  return Object.assign(
+    { title: title, 
+      description: description, 
+      priority: priority, 
+      dueDate: dueDate, 
+      created_at : created_at, 
+      updated_at : created_at },
+    {
+      _isValidDate: () => {
+        return !isValid(dueDate) || isFuture(dueDate);
+      },
+      isObjectValid: () => {
+        return title != '' && _isValidDate();
+      },
+      getFormatedDueDate: () => {
+        if(isValid(dueDate)){
+          if(isToday(dueDate)){
+            return format(dueDate, 'kk:mm');
+          }
+          return format(dueDate, "dd MMM Y 'at' kk:mm");
+        }
+        return 'No deadline';
+      }
+    }
+  )
 }
 
-const projectFactory = (title, description, priority) => {
+const todoFactory = (title, description, dueDate, priority, created_at) => {
+  const todo = { checked: false }
+  return Object.assign(todo, proto(title, description, priority,dueDate ,created_at));
+}
+
+const projectFactory = (title, description, priority,dueDate ,created_at) => {
   let todoList = [];
+  const isCheck = () => {
+    return todoList.every( item => item.checked);
+  }
+
+  const getTodoList = () => todoList;
 
   const addTodoItem = (todoItem) => {
     todoList.push(todoItem);
   }
-
-  const isCheck = () => {
-    todoList.every( item => item.checked);
-  }
-  return {title: title, description: description, priority: priority, created_at, updated_at, isCheck, addTodoItem};
+  const project = { isCheck, getTodoList, addTodoItem }
+  return Object.assign(project, proto(title, description, priority,dueDate ,created_at));
 }
 
 export {todoFactory, projectFactory};
