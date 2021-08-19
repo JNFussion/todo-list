@@ -15,7 +15,7 @@
   <header class="main-header">
     <div><i class="fas fa-bars fa-lg"></i></div>
     <h1>Do things</h1>
-    <div class="new-project btn"><i class="fas fa-plus fa-lg"></i><span>New project</span></div>
+    <button id="new-project" class="btn"><i class="fas fa-plus fa-lg"></i><span>New project</span></button>
   </header>
 
   <div class="wrapper">
@@ -36,11 +36,13 @@
             <i class="fas fa-tasks"></i>
             Project1
           </li>
-          <ul>
-            <li><i class="far fa-circle fa-sm hight"></i>Todo1</li>
-            <li><i class="far fa-circle fa-sm medium"></i>Todo2</li>
-            <li><i class="far fa-circle fa-sm low"></i>Todo3</li>
-          </ul>
+          <li>
+            <ul>
+              <li><i class="far fa-circle fa-sm hight"></i>Todo1</li>
+              <li><i class="far fa-circle fa-sm medium"></i>Todo2</li>
+              <li><i class="far fa-circle fa-sm low"></i>Todo3</li>
+            </ul>
+          </li>
           <li>
             <span class="fa-stack fa-2x">
               <i class="far fa-circle fa-stack-2x"></i>
@@ -62,20 +64,40 @@
         <div class="default-btn btn"> Set Default</div>
       </div>
     </nav>
-    <section class="project">
-      <header class="project-header">
-        <h2 class="project-title">Project1</h2>
-        <span>Due Date</span>
-      </header>
+    <article class="project" aria-label="projects content">
       <section class="project-content">
-        <p class="project-description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo nulla. Aenean non nisi vel tellus
-          dignissim scelerisque eget sed erat. Integer dignissim turpis semper dui dapibus condimentum. Donec ut tortor
-          orci. Vivamus ornare lacus dui, nec facilisis leo luctus nec. Nullam egestas convallis iaculis.
-        </p>
+        
+        <script id="project-template" type="text/template">
+          <header class="project-header">
+            <h2 class="project-title">{{project.title}}</h2>
+            <div>
+              <span>Deadline:</span>
+              <span id="dueDate">{{project.getFormatedDueDate}}</span>
+            </div>
+          </header>
+          <p class="project-description">
+            {{project.description}}
+          </p>
+        </script>
+        <script id="project-form-template" type="text/template">
+          <form id="form-project" action="#">
+            <header class="project-header">
+              <h2 class="project-title"><input type="text" name="project[title]" placeholder="Enter project's name" value="{{project.title}}"></h2>
+              <span><input type="date" name="project[dueDate]-date" value="{{}}"> <input type="time"
+                  name="project[dueDate]-time" value="{{}}"></span>
+            </header>
+            <p class="project-description">
+              <textarea name="project[description]" cols="30" rows="5"
+                placeholder="What is your project about?">{{project.description}}</textarea>
+            </p>
+            <input id="submit-project" class="btn" type="submit" value="Save">
+          </form>
+        </script>
+
+      </section>
+      <section class="todo-section">
         <div class="settings-bar">
           <ul>
-            <span class="sort-label">Sort by</span>
             <li>Created</li>
             <li>Priority</li>
             <li>Due time</li>
@@ -86,42 +108,51 @@
           </span>
         </div>
         <section class="todo-list">
-          <article class="todo">
-            <header>
-              <span><i class="far fa-circle fa-sm hight"></i></span>
-              <h3 class="todo-title">Todo</h3>
-              <span class="due-date">00/00/2020 12:00</span>
-            </header>
-            <div class="description-wrapper">
-              <p class="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo nulla. Aenean non nisi vel
-                tellus
-                dignissim scelerisque eget sed erat. Integer dignissim turpis semper dui dapibus condimentum. Donec ut
-                tortor
-                orci. Vivamus ornare lacus dui, nec facilisis leo luctus nec. Nullam egestas convallis iaculis.
-              </p>
-            </div>
-          </article>
-          <article class="todo">
-            <header>
-              <span><i class="far fa-circle fa-sm low"></i></span>
-              <h3 class="todo-title">Todo</h3>
-              <span class="due-date">00/00/2020 12:00</span>
-            </header>
-            <div class="description-wrapper">
-              <p class="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo nulla. Aenean non nisi vel
-                tellus
-                dignissim scelerisque eget sed erat. Integer dignissim turpis semper dui dapibus condimentum. Donec ut
-                tortor
-                orci. Vivamus ornare lacus dui, nec facilisis leo luctus nec. Nullam egestas convallis iaculis.
-              </p>
-            </div>
-          </article>
+          <i id="new-todo" class="fas fa-plus-circle btn-alt"></i>
+          <script id="todo-template" type="text/template">
+            {{#todos}}
+              <article class="todo">
+                <header>
+                  <span><i class="far fa-circle fa-sm hight"></i></span>
+                  <h3 class="todo-title">{{title}}</h3>
+                  <span class="due-date">{{dueDate}}</span>
+                </header>
+                <div class="description-wrapper">
+                  <p class="todo-description">
+                    {{description}}
+                  </p>
+                </div>
+              </article>
+            {{/todos}}
+          </script>
+          <script id="todo-form-template" type="text/template">
+            <article class="todo">
+              <form id="form-todo" action="#">
+                <header>
+                  <span id="priority">
+                    <select name="todo[priority]">
+                      <option value="2" selected>Hight</option>
+                      <option value="1">Medium</option>
+                      <option value="0">Low</option>
+                    </select>
+                  </span>
+                  <h3 class="todo-title"><input type="text" name="todo[title]" placeholder="Enter todo" value="{{todo.title}}"></h3>
+                  <span class="due-date"><input type="date" name="todo[dueDate]-date"> <input type="time"
+                    name="todo[dueDate]-time"></span>
+                </header>
+                <div class="description-wrapper">
+                  <p class="todo-description">
+                    <textarea name="todo[description]" cols="30" rows="5" placeholder="Describe what you task is about...">{{todo.description}}</textarea>
+                  </p>
+                </div>
+                <input id="submit-todo" class="btn" type="submit" value="Save">
+              </form>
+            </article>
+          </script>
+        
         </section>
       </section>
-    </section>
-
+    </article>
   </div>
 
 </body>
