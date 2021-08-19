@@ -1,0 +1,99 @@
+.project {
+  max-width: 1200px;
+  width: 1200px;
+  margin: 0 auto;
+  padding: 0 2em;
+  .project-header {
+    display: flex;
+    align-items: center;
+    padding: 1em 0;
+    div {
+      margin-left: auto;
+      margin-right: 2em;
+      :first-child{
+        margin-right: 1em;
+      }
+      span {
+        color: lighten($color: #38332e, $amount: 20%);
+      }
+      span#dueDate{
+      font-weight: bold;
+      color: #38332e;
+      }
+    }
+    span {
+      margin-left: auto;
+    }
+    .project-title {
+      font-size: 32px;
+      font-weight: bold;
+    }
+  }
+  .project-description {
+    padding: 1em 0;
+    margin: 0 2em 1em 2em;
+  }
+}
+
+.todo-section {
+  padding: 0 2em;
+}
+
+.settings-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 1em;
+  color: #FDFDFD;
+  background-color: #457B9D;
+  ul {
+    display: flex;
+    align-items: center;
+    .sort-label {
+      margin-right: 1.75em;
+      font-weight: 500;
+    }
+    li {
+      padding: .5em 1em;
+      border-right: 1px solid darken($color: #457B9D, $amount: 10%);
+    }
+  }
+  .icon-group {
+    display: flex;
+    gap: .5em;
+    i {
+      padding: .4em;
+    }
+  }
+}
+
+.todo-list {
+  display: grid;
+  justify-items: center;
+  margin: 1em 2.5em;
+  .fa-plus-circle {
+    justify-self: end;
+    font-size: 2.5em;
+  }
+  .todo {
+    width: 900px;
+    margin: .5em 0;
+    border-bottom: 1px solid rgba(29, 53, 87, .2);
+    header {
+      display: flex;
+      align-items: center;
+      gap: 2em;
+      padding: 1em;
+      .todo-title {
+        font-size: 20px;
+      }
+      .due-date {
+        margin-left: auto;
+        font-size: 14px;
+      }
+    }
+    .description-wrapper .todo-description {
+      padding: 1em 4em;
+    }
+  }
+}
