@@ -66,7 +66,7 @@
     </nav>
     <article class="project" aria-label="projects content">
       <section class="project-content">
-        
+
         <script id="project-template" type="text/template">
           <header class="project-header">
             <h2 class="project-title">{{project.title}}</h2>
@@ -110,46 +110,46 @@
         <section class="todo-list">
           <i id="new-todo" class="fas fa-plus-circle btn-alt"></i>
           <script id="todo-template" type="text/template">
-            {{#todos}}
-              <article class="todo">
-                <header>
-                  <span><i class="far fa-circle fa-sm hight"></i></span>
-                  <h3 class="todo-title">{{title}}</h3>
-                  <span class="due-date">{{dueDate}}</span>
-                </header>
-                <div class="description-wrapper">
-                  <p class="todo-description">
-                    {{description}}
-                  </p>
-                </div>
-              </article>
-            {{/todos}}
+              <header>
+                <span><i class="far fa-circle fa-sm hight"></i></span>
+                <h3 class="todo-title">{{todo.title}}</h3>
+                <span class="due-date">{{todo.getFormatedDueDate}}</span>
+              </header>
+              <div class="description-wrapper hide">
+                <p class="todo-description">
+                  {{todo.description}}
+                </p>
+              </div>                  
+              <button>
+                <span class="fa-stack fa-2x">
+                  <i class="far fa-circle fa-stack-2x"></i>
+                  <i class="fas fa-angle-down fa-stack-1x"></i>
+                </span>
+              </button>
           </script>
           <script id="todo-form-template" type="text/template">
-            <article class="todo">
-              <form id="form-todo" action="#">
-                <header>
-                  <span id="priority">
-                    <select name="todo[priority]">
-                      <option value="2" selected>Hight</option>
-                      <option value="1">Medium</option>
-                      <option value="0">Low</option>
-                    </select>
-                  </span>
-                  <h3 class="todo-title"><input type="text" name="todo[title]" placeholder="Enter todo" value="{{todo.title}}"></h3>
-                  <span class="due-date"><input type="date" name="todo[dueDate]-date"> <input type="time"
-                    name="todo[dueDate]-time"></span>
-                </header>
-                <div class="description-wrapper">
-                  <p class="todo-description">
-                    <textarea name="todo[description]" cols="30" rows="5" placeholder="Describe what you task is about...">{{todo.description}}</textarea>
-                  </p>
-                </div>
-                <input id="submit-todo" class="btn" type="submit" value="Save">
-              </form>
-            </article>
+            <form id="form-todo" action="#">
+              <header>
+                <span id="priority">
+                  <select name="todo[priority]">
+                    <option value="2" selected>Hight</option>
+                    <option value="1">Medium</option>
+                    <option value="0">Low</option>
+                  </select>
+                </span>
+                <h3 class="todo-title"><input type="text" name="todo[title]" placeholder="Enter todo" value="{{todo.title}}"></h3>
+                <span class="due-date"><input type="date" name="todo[dueDate]-date"> <input type="time"
+                  name="todo[dueDate]-time"></span>
+              </header>
+              <div class="description-wrapper">
+                <p class="todo-description">
+                  <textarea name="todo[description]" cols="30" rows="5" placeholder="Describe what you task is about...">{{todo.description}}</textarea>
+                </p>
+              </div>
+              <input id="submit-todo" class="btn" type="submit" value="Save">
+            </form>
           </script>
-        
+
         </section>
       </section>
     </article>
