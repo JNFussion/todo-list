@@ -9,6 +9,7 @@ const domProject = (() => {
 
   const renderShow = (project) => {
     target.innerHTML = Mustache.render(projectTemplate, { project: project });
+    pubsub.publish('showProject', project)
   }
 
   const renderNew = () => {
@@ -19,7 +20,9 @@ const domProject = (() => {
     target.innerHTML = Mustache.render(formTemplate, {project: project});
   }
 
+  pubsub.subscribe('newProject', renderNew);
   pubsub.subscribe('createProject', renderShow);
+  pubsub.subscribe('editProject', renderEdit);
 
   return {renderShow, renderNew, renderEdit}
 })();
