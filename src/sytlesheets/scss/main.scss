@@ -50,3 +50,34 @@ body {
   }
   
 }
+
+#new-project > * {
+  pointer-events: none;
+}
+
+.todo button {
+  position: absolute;
+  left: 50%;
+  right: 50%;
+  bottom: -15px;
+  border: none;
+  border-radius: 100%;
+  font-size: .5em;
+  background: none;
+  .fa-stack {
+    color: #ADB5BD;
+    .fa-circle {
+      opacity: .1;
+      transition: all .5s;
+    }
+  }
+  &:hover{
+    .fa-stack {
+      color: #212529;
+    }
+    .fa-circle{
+      color: #ADB5BD;
+      opacity: 1;
+    }
+  } 
+}
