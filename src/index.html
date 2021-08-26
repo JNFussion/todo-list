@@ -13,17 +13,17 @@
 <body>
 
   <header class="main-header">
-    <div><i class="fas fa-bars fa-lg"></i></div>
+    <button id="toggle-navbar" class="btn rounded-corners"><i class="fas fa-bars fa-lg"></i></button>
     <h1>Do things</h1>
-    <button id="new-project" class="btn"><i class="fas fa-plus fa-lg"></i><span>New project</span></button>
+    <button id="new-project" class="btn primary rounded-corners has-icon"><i class="fas fa-plus fa-lg"></i><span>New project</span></button>
   </header>
 
   <div class="wrapper">
     <nav class="navbar">
-      <ul class="navbar-list fa-ul">
-        <li><span class="fa-li"><i class="fas fa-calendar-day"></i></span>Today</li>
-        <li><span class="fa-li"><i class="far fa-calendar-alt"></i></span>Upcomming</li>
-        <li><span class="fa-li"><i class="fas fa-exclamation"></i></span>Priority</li>
+      <ul class="navbar-list">
+        <li><button class="btn has-icon rounded-corners"><i class="fas fa-calendar-day fa-fw"></i><span>Today</span></button></li>
+        <li><button class="btn has-icon rounded-corners"><i class="far fa-calendar-alt fa-fw"></i><span>Upcomming</span></button></li>
+        <li><button class="btn has-icon rounded-corners"><i class="fas fa-exclamation fa-fw"></i><span>Priority</span></button></li>
       </ul>
       <div class="projects-list-wrapper">
         <h2>Projects</h2>
@@ -33,7 +33,7 @@
               <i class="far fa-circle fa-stack-2x"></i>
               <i class="fas fa-angle-right fa-stack-1x"></i>
             </span>
-            <i class="fas fa-tasks"></i>
+            <i class="fas fa-todos"></i>
             Project1
           </li>
           <li>
@@ -48,7 +48,7 @@
               <i class="far fa-circle fa-stack-2x"></i>
               <i class="fas fa-angle-right fa-stack-1x"></i>
             </span>
-            <i class="fas fa-tasks"></i>
+            <i class="fas fa-todos"></i>
             Project2
           </li>
           <li>
@@ -56,12 +56,12 @@
               <i class="far fa-circle fa-stack-2x"></i>
               <i class="fas fa-angle-right fa-stack-1x"></i>
             </span>
-            <i class="fas fa-tasks"></i>
+            <i class="fas fa-todos"></i>
             Project1
           </li>
         </ul>
 
-        <div class="default-btn btn"> Set Default</div>
+        <button id="default-btn" class="btn primary rounded-corners"> Set Default </button>
       </div>
     </nav>
     <article class="project" aria-label="projects content">
@@ -70,7 +70,15 @@
         <script id="project-template" type="text/template">
           <header class="project-header">
             <h2 class="project-title">{{project.title}}</h2>
-            <div>
+            <div class="btn-group">
+              <button class="edit-btn btn inverted">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="delete-btn btn">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+            <div class="due-date-container">
               <span>Deadline:</span>
               <span id="dueDate">{{project.getFormatedDueDate}}</span>
             </div>
@@ -98,43 +106,58 @@
       <section class="todo-section">
         <div class="settings-bar">
           <ul>
-            <li>Created</li>
-            <li>Priority</li>
-            <li>Due time</li>
+            <li><button id="sortCreatedAt" class="current btn">Recent</button></li>
+            <li><button id="sortPriority" class="btn">Priority</button></li>
+            <li><button id="sortDueDate" class="btn">Due time</button></li>
           </ul>
-          <span class="icon-group">
-            <i class="fas fa-grip-horizontal"></i>
-            <i class="fas fa-grip-lines"></i>
+          <span id="direction-order" class="icon-group">
+            <button><i id="desc" class="fas fa-sort-amount-down current"></i></button>
+            <button><i id="asc" class="fas fa-sort-amount-down-alt"></i></button>
+          </span>
+          <span id="style-grid" class="icon-group">
+            <button><i  id="grip-horizontal" class="fas fa-grip-horizontal"></i></button>
+            <button><i  id="grip-lines" class="fas fa-grip-lines current"></i></button>
           </span>
         </div>
         <section class="todo-list">
-          <i id="new-todo" class="fas fa-plus-circle btn-alt"></i>
           <script id="todo-template" type="text/template">
-              <header>
-                <span><i class="far fa-circle fa-sm hight"></i></span>
-                <h3 class="todo-title">{{todo.title}}</h3>
-                <span class="due-date">{{todo.getFormatedDueDate}}</span>
-              </header>
-              <div class="description-wrapper hide">
-                <p class="todo-description">
-                  {{todo.description}}
-                </p>
-              </div>                  
-              <button>
-                <span class="fa-stack fa-2x">
-                  <i class="far fa-circle fa-stack-2x"></i>
-                  <i class="fas fa-angle-down fa-stack-1x"></i>
-                </span>
-              </button>
+            {{#todo}}
+            <header class="todo-header"> 
+              <button class="complete-btn btn"><i class="fas fa-check"></i></button>
+              <span><i class="far fa-circle fa-sm {{todo.priority.name}}"></i></span>
+              <h3 class="todo-title">{{todo.title}}</h3>
+              <span class="due-date">{{todo.getFormatedDueDate}}</span>
+              <div class="btn-group">
+                <button class="edit-btn btn inverted">
+                  <i class="far fa-edit"></i>
+                </button>
+                <button class="delete-btn btn">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </header>
+            <div class="description-wrapper hide">
+              <p class="todo-description">
+                {{todo.description}}
+              </p>
+            </div>
+            <button class="extensible">
+              <span class="fa-stack fa-2x">
+                <i class="far fa-circle fa-stack-2x"></i>
+                <i class="fas fa-angle-down fa-stack-1x"></i>
+              </span>
+            </button>
+            {{/todo}}
+            {{^todo}}<p class="no-todo">Nothing todo, yet.</p>{{/todo}}
           </script>
           <script id="todo-form-template" type="text/template">
             <form id="form-todo" action="#">
-              <header>
+              <header class="todo-header">
                 <span id="priority">
                   <select name="todo[priority]">
-                    <option value="2" selected>Hight</option>
-                    <option value="1">Medium</option>
-                    <option value="0">Low</option>
+                    <option value="HIGHT" selected>Hight</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="LOW">Low</option>
                   </select>
                 </span>
                 <h3 class="todo-title"><input type="text" name="todo[title]" placeholder="Enter todo" value="{{todo.title}}"></h3>
@@ -143,14 +166,14 @@
               </header>
               <div class="description-wrapper">
                 <p class="todo-description">
-                  <textarea name="todo[description]" cols="30" rows="5" placeholder="Describe what you task is about...">{{todo.description}}</textarea>
+                  <textarea name="todo[description]" cols="30" rows="5" placeholder="Describe what you todo is about...">{{todo.description}}</textarea>
                 </p>
               </div>
               <input id="submit-todo" class="btn" type="submit" value="Save">
             </form>
           </script>
-
         </section>
+        <button class="btn round inverted"><i id="new-todo" class="fas fa-plus-circle"></i></button>
       </section>
     </article>
   </div>
