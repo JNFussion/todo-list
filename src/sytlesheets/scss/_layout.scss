@@ -12,12 +12,6 @@
     justify-items: center;
     font-size: 36px;
   }
-  #new-project {
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    border: none;
-  }
 }
 
 .wrapper {
@@ -36,7 +30,7 @@
   border-right: 1px solid darken($color: #F8F9FA, $amount: 10%);
   .navbar-list li {
     margin: 0 2em;
-    padding: .75em .25em;
+    padding: .5em .25em;
     font-size: 18px;
     font-weight: 500;
     text-transform: capitalize;
@@ -78,10 +72,6 @@
 
       }
     }
-    .default-btn {
-      width: max-content;
-      margin: 2em auto;
-    }
     &::before {
       position: relative;
       content: '';
@@ -92,5 +82,26 @@
       background-color: darken($color: #F8F9FA, $amount: 10%);
       transform: translateX(-50%);
     }
+  }
+}
+
+.settings-bar {
+  display: flex;
+  align-items: center;
+  padding-right: 1em;
+  background-color: #457B9D;
+  ul {
+    display: flex;
+    align-items: center;
+  }
+  .icon-group {
+    display: flex;
+    gap: .5em;
+  }
+  #direction-order {
+    margin: 0 1em;
+  }
+  #style-grid {
+    margin-left: auto;
   }
 }

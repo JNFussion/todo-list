@@ -19,19 +19,56 @@ body {
 
 /* BUTTONS */
 
-.btn {
-  padding: 0.75em 1em;
-  border-radius: 5px;
-  color: #FAFAFA;
-  background-color: #1D3557;
-  box-shadow: 1px 1px 5px rgba(29, 53, 87, .2);
+button {
+  padding: 0;
+  border: none;
+  background: none;
   cursor: pointer;
 }
-.btn-alt {
-  color: #1D3557;
-  border-radius: 50%;
-  box-shadow: 1px 1px 5px rgba(29, 53, 87, .2);
-  cursor: pointer;
+
+.btn {
+  font-size: 16px;
+  font-weight: bold;
+  transition: all .2s;
+  &.primary {
+    padding: .75em 1em;
+    color: #FAFAFA;
+    background-color: #1D3557;
+    box-shadow: 1px 1px 5px rgba(29, 53, 87, .2);
+  }
+  &.primary:hover {
+    background-color: lighten($color: #1D3557, $amount: 20%);
+  }
+  &.rounded-corners {
+    border-radius: 2px;
+  }
+
+  &.round {
+    border-radius: 100%;
+  }
+  &.inverted {
+    color: #1D3557;
+    background-color: #FAFAFA;
+  }
+  &.inverted:hover {
+    color: lighten($color: #1D3557, $amount: 20%);
+  }
+  &.has-icon {
+    display: flex;
+    align-items: center;
+    gap: .75em;
+  }
+}
+
+.navbar li .btn {
+  padding: .1em .5em;
+  width: 100%;
+  i {
+    font-size: 1.2em;
+  }
+  &:hover {
+    background-color: darken($color: #F8F9FA, $amount: 20%);
+  }
 }
 
 .fa-circle{
@@ -50,34 +87,112 @@ body {
   }
   
 }
+#toggle-navbar {
+  padding: .5em .75em;
+}
+
+#toggle-navbar:hover {
+  background-color: darken($color: #A8DADC, $amount: 20%);
+}
 
 #new-project > * {
   pointer-events: none;
 }
 
-.todo button {
-  position: absolute;
-  left: 50%;
-  right: 50%;
-  bottom: -15px;
-  border: none;
-  border-radius: 100%;
-  font-size: .5em;
-  background: none;
-  .fa-stack {
-    color: #ADB5BD;
-    .fa-circle {
-      opacity: .1;
-      transition: all .5s;
-    }
-  }
-  &:hover{
-    .fa-stack {
-      color: #212529;
-    }
-    .fa-circle{
-      color: #ADB5BD;
+#default-btn {
+  display: block;
+  width: max-content;
+  margin: 2em auto;
+}
+
+#new-todo {
+  font-size: 2.5em;
+}
+
+.btn-group {
+  display: flex;
+  gap: .25em;
+  .btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: .4;
+    &:hover{
       opacity: 1;
     }
-  } 
+    i {
+      padding: .5em;
+    }
+  }
+  .inverted {
+    background: none;
+  }
+  .delete-btn {
+    color: rgb(220, 30, 10);
+  }
+}
+
+.project-header{
+  .btn-group {
+    margin-left: 1em;
+  }
+}
+.todo-section > button {
+  display: block;
+  margin-left: auto;
+  margin-right: 23px;
+}
+
+.settings-bar {
+  * { color: #FDFDFD; }
+  i { 
+    padding: .4em;
+    font-size: 16px;
+    border-radius: 2px;
+  }
+  ul button {
+    padding: .5em 1em;
+    border-right: 1px solid darken($color: #457B9D, $amount: 10%);
+  }
+  button:hover, button.current, i.current {
+    border-radius: 2px;
+    background-color: darken($color: #457B9D, $amount: 20%);
+  }
+}
+
+.todo {
+  .extensible {
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    bottom: -15px;
+    border: none;
+    border-radius: 100%;
+    font-size: .5em;
+    background: none;
+    .fa-stack {
+      color: #ADB5BD;
+      .fa-circle {
+        opacity: .1;
+        transition: all .5s;
+      }
+    }
+    &:hover{
+      .fa-stack {
+        color: #212529;
+      }
+      .fa-circle{
+        color: #ADB5BD;
+        opacity: 1;
+      }
+    } 
+  }
+  .complete-btn {
+    color: #23d160;
+    border: none;
+    opacity: .4;
+    &:hover{
+      opacity: 1;
+    }
+  }
 }
