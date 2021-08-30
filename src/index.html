@@ -90,7 +90,7 @@
         <script id="project-form-template" type="text/template">
           <form id="form-project" action="#">
             <header class="project-header">
-              <h2 class="project-title"><input type="text" name="project[title]" placeholder="Enter project's name" value="{{project.title}}"></h2>
+              <h2 class="project-title"><input type="text" name="project[title]" placeholder="Enter project's name *" value="{{project.title}}" required></h2>
               <span><input type="date" name="project[dueDate]-date" value="{{project.getDate}}"> <input type="time"
                   name="project[dueDate]-time" value="{{project.getTime}}"></span>
             </header>
@@ -98,7 +98,10 @@
               <textarea name="project[description]" cols="30" rows="5"
                 placeholder="What is your project about?">{{project.description}}</textarea>
             </p>
-            <input id="submit-project" class="btn" type="submit" value="Save">
+            <div class="form-buttons">
+              <button class="cancel-btn btn rounded-corners">Cancel</button>
+              <input id="submit-project" class="btn" type="submit" value="Save">
+            </div>
           </form>
         </script>
 
@@ -148,7 +151,6 @@
           </script>
           <script id="todo-form-template" type="text/template">
             <form id="form-todo" action="#">
-              
               <header class="todo-header">
                 <span id="priority">
                   <select name="todo[priority]">
@@ -157,8 +159,8 @@
                     <option value="LOW">Low</option>
                   </select>
                 </span>
-                <h3 class="todo-title"><input type="text" name="todo[title]" placeholder="Enter todo" value="{{todo.title}}" required></h3>
-                <span class="due-date"><input type="date" name="todo[dueDate]-date"value="{{todo.getDate}}"> <input type="time"
+                <h3 class="todo-title"><input type="text" name="todo[title]" placeholder="Enter todo *" value="{{todo.title}}" required></h3>
+                <span class="due-date"><input type="date" name="todo[dueDate]-date" value="{{todo.getDate}}"> <input type="time"
                   name="todo[dueDate]-time" value="{{todo.getTime}}"></span>
               </header>
               <div class="description-wrapper">
@@ -166,7 +168,10 @@
                   <textarea name="todo[description]" cols="30" rows="5" placeholder="Describe what you todo is about...">{{todo.description}}</textarea>
                 </p>
               </div>
-              <input id="submit-todo" class="btn" type="submit" value="Save">
+              <div class="form-buttons">
+                <button class="cancel-btn btn rounded-corners">Cancel</button>
+                <input id="submit-todo" class="btn" type="submit" value="Save">
+              </div>
             </form>
           </script>
         </section>
@@ -174,7 +179,6 @@
       </section>
     </article>
   </div>
-
 </body>
 
 </html>

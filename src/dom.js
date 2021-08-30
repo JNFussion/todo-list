@@ -6,6 +6,7 @@ import { pubsub } from './pubsub';
 import { hide, priorityEnum, toggleHide } from './helper';
 import { DomBarSettings } from './dom-bar-settings';
 import { nanoid } from 'nanoid';
+import { dashboard } from './dashboard';
 
 const domManager = (() => {
 
@@ -60,7 +61,6 @@ const domManager = (() => {
         break;
       case 'new-todo':
         if(isThereForm()) break;
-
         pubsub.publish('newTodo', projectFactory());
         break;
       case 'sortCreatedAt':
@@ -114,8 +114,9 @@ const domManager = (() => {
           pubsub.publish('deleteProject', e.target.closest('.project').id);
         }
       }
+    }else if (e.target && e.target.classList.contains('cancel-btn')){
+      pubsub.publish('showProject', dashboard.getCurrentProject())
     }
-
   });
 
   document.addEventListener('submit', (e) => {

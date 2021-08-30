@@ -1,6 +1,6 @@
 import { render } from 'mustache';
 import { pubsub } from './pubsub';
-import { hide, toggleHide } from './helper';
+import { hide, unhide } from './helper';
 
 const Mustache = require('mustache');
 
@@ -29,10 +29,6 @@ const domTodo = (() => {
     target.querySelectorAll('.description-wrapper').forEach(item => hide(item))
   }
 
-  const toggleNewBtn = () => {
-    toggleHide(newTodoBtn)
-  }
-
   const renderIndex = (project) => {
     removeTodos();
     if(project.getTodoList() == 0){
@@ -52,6 +48,7 @@ const domTodo = (() => {
 
     newArticle.innerHTML = Mustache.render(todoTemplate, { todo: todo})
     target.prepend(newArticle);
+    unhide(newTodoBtn);
   }
 
   const renderNew = (todo) => {
@@ -61,6 +58,7 @@ const domTodo = (() => {
     newArticle.innerHTML = Mustache.render(formTemplate, {todo});
     newArticle.querySelector('select[name="todo[priority]"]').value = 'HIGHT';
     target.appendChild(newArticle);
+    hide(newTodoBtn)
   }
 
   const renderEdit= (todo) => {
@@ -68,6 +66,7 @@ const domTodo = (() => {
     if(articleToEdit.id) {
       articleToEdit.innerHTML = Mustache.render(formTemplate, {todo});
       articleToEdit.querySelector('select[name="todo[priority]"]').value = todo.priority.name.toUpperCase();
+      hide(newTodoBtn)
     }else {
       renderNew(todo);
     }
@@ -79,10 +78,8 @@ const domTodo = (() => {
   pubsub.subscribe('createProject', renderIndex)
   pubsub.subscribe('showProject', renderIndex);
   pubsub.subscribe('newTodo', contractAll);
-  pubsub.subscribe('newTodo', toggleNewBtn);
   pubsub.subscribe('newTodo', renderNew);
   pubsub.subscribe('createTodo', removeForm);
-  pubsub.subscribe('createTodo', toggleNewBtn)
   pubsub.subscribe('createTodo', renderShow);
   pubsub.subscribe('renderEditTodo', renderEdit);
   pubsub.subscribe('sortedTodos', renderIndex);

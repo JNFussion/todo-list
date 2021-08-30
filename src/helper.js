@@ -2,6 +2,10 @@ const hide = (elementToHide) => {
   elementToHide.classList.add('hide')
 }
 
+const unhide = (elementToHide) => {
+  elementToHide.classList.remove('hide')
+}
+
 const toggleHide = (elementToHide) => {
   elementToHide.classList.toggle('hide');
 }
@@ -12,4 +16,4 @@ const priorityEnum ={
   LOW: {weight: 0, name: "low"}
 }
 
-export {hide, toggleHide, priorityEnum}
+export {hide, unhide, toggleHide, priorityEnum}

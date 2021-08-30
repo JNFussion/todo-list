@@ -25,8 +25,9 @@ const dashboard = (() => {
   let currentProject = project;
   let orderDesc = true;
 
-  const addProject = (project) => { projectsList.push(project) }
-  const addTodoToCurrentProject = (todo) => { currentProject.addTodoItem(todo) }
+  const addProject = (project) => projectsList.push(project)
+  const addTodoToCurrentProject = (todo) => currentProject.addTodoItem(todo) 
+  const getCurrentProject = () => currentProject;
   const setCurrentProject = (project) => currentProject = project;
   const setOrder = (order) => orderDesc = order;
   addProject(project)
@@ -102,7 +103,7 @@ const dashboard = (() => {
   pubsub.subscribe('sortTodosOfProject',sortCurrentProject);
   pubsub.subscribe('swapOrderOption', setOrder);
   pubsub.subscribe('swapOrderOption', updateOrderList);
-  return { projectsList, addProject, setCurrentProject, sortCurrentProject };
+  return { projectsList, addProject, getCurrentProject, setCurrentProject, sortCurrentProject };
 })();
 
 export { dashboard };

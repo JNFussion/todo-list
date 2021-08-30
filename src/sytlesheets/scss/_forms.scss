@@ -24,16 +24,33 @@
     font-size: 16px;
     resize: none;
   }
+  .form-buttons {
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    gap: 1em;
+    margin: 0 2.5em 1.5em 0;
+    .cancel-btn {
+      padding: .75em 1em;
+      box-shadow: 1px 1px 5px darken($color: #CED4DA, $amount: 20%);
+      font-size: 14px;
+      color: black;
+      background-color: #CED4DA;
+      scale: .95;
+      &:hover {
+        background: #BAC0C5;
+      }
+    }
+  }
   input.btn {
     display: block;
     padding: 0.75em 1.5em;
-    margin: 0 2.5em 1.5em auto;
     border: none;
     box-shadow:1px 1px 5px rgba(41, 57, 24, .3);
-    font-weight: bold;
+/*     font-weight: bold; */
     color: #212529;
     background-color: #80d926;
-    transition: all .2s;
+/*     transition: all .2s; */
     
     &:hover {
       color: #FCFCFC;
