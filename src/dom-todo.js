@@ -58,8 +58,8 @@ const domTodo = (() => {
     if(target.querySelectorAll('.todo').length == 1 && !target.querySelectorAll('.todo')[0].id) removeTodos();
     
     let newArticle = _article();
-    newArticle.innerHTML = Mustache.render(formTemplate, {todo})
-    newArticle.querySelector('select[name="todo[priority]"]').value = 'HIGHT' 
+    newArticle.innerHTML = Mustache.render(formTemplate, {todo});
+    newArticle.querySelector('select[name="todo[priority]"]').value = 'HIGHT';
     target.appendChild(newArticle);
   }
 

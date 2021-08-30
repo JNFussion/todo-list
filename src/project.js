@@ -22,11 +22,11 @@ const proto = (title, description, priority, dueDate) => {
     return 'No deadline';
   }
   const getDate = () => {
-    if(!dueDate) return "";
+    if(!isValid(dueDate)) return "";
     return format(dueDate, "Y-MM-dd");
   }
   const getTime = () => {
-    if(!dueDate) return "";
+    if(!isValid(dueDate)) return "";
     return format(dueDate, "kk:mm")
   }
   return Object.assign(
