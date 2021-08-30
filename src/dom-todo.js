@@ -11,18 +11,10 @@ const domTodo = (() => {
   const formTemplate = document.getElementById('todo-form-template').innerHTML;
   let noTodoFlag = true;
 
-
   const _article = () => {
     let article = document.createElement('article');
     article.classList.add('todo');
     return article;
-  }
-
-  const getIndexTodo = (btn) => {
-    let list = Array.from(target.querySelectorAll('.todo'));
-    let max = list.length - 1;
-    let index = max - list.indexOf(btn.closest('.todo'));
-    pubsub.publish('deleteTodo', index);
   }
 
   const removeForm = () => {
@@ -43,7 +35,7 @@ const domTodo = (() => {
 
   const renderIndex = (project) => {
     removeTodos();
-    if(project.getTodoList().length == 0){
+    if(project.getTodoList() == 0){
       renderShow(null);
       noTodoFlag = true;
     }else {
@@ -55,34 +47,47 @@ const domTodo = (() => {
     noTodoFlag && removeTodos();
     noTodoFlag = false;
     let newArticle = _article();
+
+    if(todo) newArticle.id = todo.id;
+
     newArticle.innerHTML = Mustache.render(todoTemplate, { todo: todo})
     target.prepend(newArticle);
   }
 
-  const renderNew = () => {
+  const renderNew = (todo) => {
+    if(target.querySelectorAll('.todo').length == 1 && !target.querySelectorAll('.todo')[0].id) removeTodos();
+    
     let newArticle = _article();
-    newArticle.innerHTML = Mustache.render(formTemplate, {})
+    newArticle.innerHTML = Mustache.render(formTemplate, {todo})
+    newArticle.querySelector('select[name="todo[priority]"]').value = 'HIGHT' 
     target.appendChild(newArticle);
   }
 
   const renderEdit= (todo) => {
-    document.getElementById('form-todo').closest('.todo').innerHTML = Mustache.render(formTemplate, {todo: todo});
+    let articleToEdit = target.querySelector(`#${todo.id}`);
+    if(articleToEdit.id) {
+      articleToEdit.innerHTML = Mustache.render(formTemplate, {todo});
+      articleToEdit.querySelector('select[name="todo[priority]"]').value = todo.priority.name.toUpperCase();
+    }else {
+      renderNew(todo);
+    }
   }
 
   
-
+  
   pubsub.subscribe('newProject', removeTodos);
+  pubsub.subscribe('createProject', renderIndex)
   pubsub.subscribe('showProject', renderIndex);
   pubsub.subscribe('newTodo', contractAll);
   pubsub.subscribe('newTodo', toggleNewBtn);
   pubsub.subscribe('newTodo', renderNew);
-  pubsub.subscribe('deleteButtonTodo', getIndexTodo);
   pubsub.subscribe('createTodo', removeForm);
   pubsub.subscribe('createTodo', toggleNewBtn)
   pubsub.subscribe('createTodo', renderShow);
+  pubsub.subscribe('renderEditTodo', renderEdit);
   pubsub.subscribe('sortedTodos', renderIndex);
 
-  return {renderShow, renderNew, renderEdit, removeForm}
+  return {renderShow, renderNew, renderEdit, removeForm }
 })();
 
  export {domTodo};

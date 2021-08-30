@@ -8,12 +8,13 @@ const domProject = (() => {
   const formTemplate = document.getElementById('project-form-template').innerHTML;
 
   const renderShow = (project) => {
+    document.querySelector('.project').id = project.id;
     target.innerHTML = Mustache.render(projectTemplate, { project: project });
-    pubsub.publish('showProject', project)
   }
 
-  const renderNew = () => {
-    target.innerHTML = Mustache.render(formTemplate, {});
+  const renderNew = (project) => {
+    document.querySelector('.project').id = ""
+    target.innerHTML = Mustache.render(formTemplate, {project});
   }
 
   const renderEdit= (project) => {
@@ -22,7 +23,8 @@ const domProject = (() => {
 
   pubsub.subscribe('newProject', renderNew);
   pubsub.subscribe('createProject', renderShow);
-  pubsub.subscribe('editProject', renderEdit);
+  pubsub.subscribe('showProject', renderShow);
+  pubsub.subscribe('renderEditProject', renderEdit);
 
   return {renderShow, renderNew, renderEdit}
 })();
