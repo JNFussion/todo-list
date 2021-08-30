@@ -91,8 +91,8 @@
           <form id="form-project" action="#">
             <header class="project-header">
               <h2 class="project-title"><input type="text" name="project[title]" placeholder="Enter project's name" value="{{project.title}}"></h2>
-              <span><input type="date" name="project[dueDate]-date" value="{{}}"> <input type="time"
-                  name="project[dueDate]-time" value="{{}}"></span>
+              <span><input type="date" name="project[dueDate]-date" value="{{project.getDate}}"> <input type="time"
+                  name="project[dueDate]-time" value="{{project.getTime}}"></span>
             </header>
             <p class="project-description">
               <textarea name="project[description]" cols="30" rows="5"
@@ -114,10 +114,6 @@
             <button><i id="desc" class="fas fa-sort-amount-down current"></i></button>
             <button><i id="asc" class="fas fa-sort-amount-down-alt"></i></button>
           </span>
-          <span id="style-grid" class="icon-group">
-            <button><i  id="grip-horizontal" class="fas fa-grip-horizontal"></i></button>
-            <button><i  id="grip-lines" class="fas fa-grip-lines current"></i></button>
-          </span>
         </div>
         <section class="todo-list">
           <script id="todo-template" type="text/template">
@@ -125,7 +121,7 @@
             <header class="todo-header"> 
               <button class="complete-btn btn"><i class="fas fa-check"></i></button>
               <span><i class="far fa-circle fa-sm {{todo.priority.name}}"></i></span>
-              <h3 class="todo-title">{{todo.title}}</h3>
+              <h3 class="todo-title" required>{{todo.title}}</h3>
               <span class="due-date">{{todo.getFormatedDueDate}}</span>
               <div class="btn-group">
                 <button class="edit-btn btn inverted">
@@ -152,17 +148,18 @@
           </script>
           <script id="todo-form-template" type="text/template">
             <form id="form-todo" action="#">
+              
               <header class="todo-header">
                 <span id="priority">
                   <select name="todo[priority]">
-                    <option value="HIGHT" selected>Hight</option>
+                    <option value="HIGHT">Hight</option>
                     <option value="MEDIUM">Medium</option>
                     <option value="LOW">Low</option>
                   </select>
                 </span>
-                <h3 class="todo-title"><input type="text" name="todo[title]" placeholder="Enter todo" value="{{todo.title}}"></h3>
-                <span class="due-date"><input type="date" name="todo[dueDate]-date"> <input type="time"
-                  name="todo[dueDate]-time"></span>
+                <h3 class="todo-title"><input type="text" name="todo[title]" placeholder="Enter todo" value="{{todo.title}}" required></h3>
+                <span class="due-date"><input type="date" name="todo[dueDate]-date"value="{{todo.getDate}}"> <input type="time"
+                  name="todo[dueDate]-time" value="{{todo.getTime}}"></span>
               </header>
               <div class="description-wrapper">
                 <p class="todo-description">
