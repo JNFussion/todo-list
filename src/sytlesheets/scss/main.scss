@@ -16,6 +16,22 @@ body {
   display: none;
 }
 
+.fa-circle{
+  border-radius: 100%;
+  &.hight {
+    color: red;
+    background-color: rgba(255, 0, 0, .1);
+  }
+  &.medium {
+    color: orange;
+    background-color: rgba(255, 165, 0, .1);
+  }
+  &.low {
+    color: green;
+    background-color: rgba(0, 128, 0, .1);
+  }
+  
+}
 
 /* BUTTONS */
 
@@ -71,24 +87,11 @@ button {
   }
 }
 
-.fa-circle{
-  border-radius: 100%;
-  &.hight {
-    color: red;
-    background-color: rgba(255, 0, 0, .1);
-  }
-  &.medium {
-    color: orange;
-    background-color: rgba(255, 165, 0, .1);
-  }
-  &.low {
-    color: green;
-    background-color: rgba(0, 128, 0, .1);
-  }
-  
-}
 #toggle-navbar {
   padding: .5em .75em;
+  & > * {
+    pointer-events: none;
+  }
 }
 
 #toggle-navbar:hover {
@@ -160,15 +163,9 @@ button {
   }
 }
 
-.todo {
-  .extensible {
-    position: absolute;
-    left: 50%;
-    right: 50%;
-    bottom: -15px;
-    border: none;
+.extensible {
+  border: none;
     border-radius: 100%;
-    font-size: .5em;
     background: none;
     .fa-stack {
       color: #ADB5BD;
@@ -186,6 +183,15 @@ button {
         opacity: 1;
       }
     } 
+}
+
+.todo {
+  .extensible {
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    bottom: -15px;
+    font-size: .5em;
   }
   .complete-btn {
     color: #23d160;
@@ -195,4 +201,17 @@ button {
       opacity: 1;
     }
   }
+}
+
+.slide-in-x { animation: slide-inX 1s forwards ease-in-out; }
+.slide-out-x { animation: slide-outX 1s forwards ease-in-out; }
+  
+@keyframes slide-inX {
+  0% {transform: translateX(-100%);}
+  100% { transform: translateX(0%); }
+}
+
+@keyframes slide-outX {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
 }

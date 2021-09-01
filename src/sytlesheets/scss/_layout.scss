@@ -21,7 +21,6 @@
 }
 
 /* NAVBAR ON LEFT SIDE */
-
 .navbar {
   width: 360px;
   max-width: 360px;
@@ -46,30 +45,40 @@
       font-weight: bold;
     }
     .projects-list{
-      li {
+      .navbar-project-head, .navbar-project-title, .navbar-todo {
         display: flex;
         align-items: center;
-        gap: 1em;
+      }
+      .navbar-project-head {
+        gap: .75em;
+      }
+      .navbar-project-title, .navbar-todo{
+        gap: .5em;
+        padding: .1em .5em;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all .2s;
+        &:hover {
+          background-color: darken($color: #F8F9FA, $amount: 20%);
+        }
+      }
+      .navbar-project-title  {
+        flex: 1;
+      }
+      li {
+
         padding: .25em 0;
         margin: .25em 0;
       }
       ul li{
-        padding-left: 6em;
+        margin-left: 5.75em;
       }
       .fa-stack{
         margin: 0 .75em;
-        font-size: .8em;
-        
-        .fa-circle {
-          opacity: 0;
-          transition: all .2s;
-        }
-        &:hover {
-          .fa-circle {
-          opacity: .1;
-        }
-        }
-
+        font-size: 1em;
+      }
+      .navbar-todo .fa-circle {
+        font-size: .6em;
       }
     }
     &::before {
@@ -84,6 +93,7 @@
     }
   }
 }
+
 
 .settings-bar {
   display: flex;
@@ -100,8 +110,5 @@
   }
   #direction-order {
     margin: 0 1em;
-  }
-  #style-grid {
-    margin-left: auto;
   }
 }
