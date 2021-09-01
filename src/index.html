@@ -28,37 +28,29 @@
       <div class="projects-list-wrapper">
         <h2>Projects</h2>
         <ul class="projects-list">
-          <li>
-            <span class="fa-stack fa-2x">
-              <i class="far fa-circle fa-stack-2x"></i>
-              <i class="fas fa-angle-right fa-stack-1x"></i>
-            </span>
-            <i class="fas fa-todos"></i>
-            Project1
-          </li>
-          <li>
-            <ul>
-              <li><i class="far fa-circle fa-sm hight"></i>Todo1</li>
-              <li><i class="far fa-circle fa-sm medium"></i>Todo2</li>
-              <li><i class="far fa-circle fa-sm low"></i>Todo3</li>
-            </ul>
-          </li>
-          <li>
-            <span class="fa-stack fa-2x">
-              <i class="far fa-circle fa-stack-2x"></i>
-              <i class="fas fa-angle-right fa-stack-1x"></i>
-            </span>
-            <i class="fas fa-todos"></i>
-            Project2
-          </li>
-          <li>
-            <span class="fa-stack fa-2x">
-              <i class="far fa-circle fa-stack-2x"></i>
-              <i class="fas fa-angle-right fa-stack-1x"></i>
-            </span>
-            <i class="fas fa-todos"></i>
-            Project1
-          </li>
+          <script id="navbar-project-template" type="text/template">
+            {{#project}}
+            <li data-id="{{id}}" class="navbar-project">
+              <div class="navbar-project-head">
+                <button class="extensible">
+                  <span class="fa-stack fa-2x">
+                    <i class="far fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-angle-down fa-stack-1x"></i>
+                  </span>
+                </button>
+                <span class="navbar-project-title">
+                  <i class="fas fa-tasks"></i>
+                  {{title}}
+                </span>
+              </div>
+              <ul class="navbar-todos-list {{#hidden}}{{/hidden}}{{^hidden}}{{hidden}}hide{{/hidden}}">
+                {{#getTodoList}}
+                <li data-id="{{id}}" class="navbar-todo"><i class="far fa-circle fa-sm {{priority.name}}"></i>{{title}}</li>
+                {{/getTodoList}}
+              </ul>
+            </li>
+            {{/project}}
+          </script>
         </ul>
 
         <button id="default-btn" class="btn primary rounded-corners"> Set Default </button>
