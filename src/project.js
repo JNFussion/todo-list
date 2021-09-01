@@ -40,8 +40,8 @@ const proto = (title, description, priority, dueDate) => {
     {isObjectValid, getFormatedDueDate, getDate, getTime })
 }
 
-const todoFactory = (title, description, priority, dueDate) => {
-  const todo = { checked: false}
+const todoFactory = (title, description, priority, dueDate, project) => {
+  const todo = { checked: false, project: project}
   return Object.assign(todo, proto(title, description, priority, dueDate));
 }
 
