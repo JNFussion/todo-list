@@ -3,12 +3,16 @@ import {domProject} from './dom-project';
 import {domTodo} from './dom-todo';
 import { projectFactory, todoFactory } from './project';
 import { pubsub } from './pubsub';
-import { hide, priorityEnum, toggleHide } from './helper';
+import { hide, unhide, priorityEnum, toggleHide } from './helper';
 import { DomBarSettings } from './dom-bar-settings';
 import { nanoid } from 'nanoid';
 import { dashboard } from './dashboard';
+import { domNavbar } from './dom-navbar';
 
 const domManager = (() => {
+
+  const navbar = document.querySelector('.navbar');
+  let flagOut = false;
 
   const _getFullDate = (date, time) => {
       if(!date && time) {
@@ -61,7 +65,7 @@ const domManager = (() => {
         break;
       case 'new-todo':
         if(isThereForm()) break;
-        pubsub.publish('newTodo', projectFactory());
+        pubsub.publish('newTodo', todoFactory());
         break;
       case 'sortCreatedAt':
         if(e.target.classList.contains('current')) break;
@@ -88,15 +92,28 @@ const domManager = (() => {
         pubsub.publish('swapSelectBarOptions', e.target)
         pubsub.publish('swapOrderOption', true);
         break;
+      case 'toggle-navbar':
+        if(!navbar.classList.contains('slide-in-x') && !navbar.classList.contains('slide-out-x')){
+          navbar.classList.add('slide-in-x')  
+        }
+
+        navbar.classList.replace(`slide-${flagOut ? "out-x" : "in-x"}`, `slide-${flagOut ? "in-x" : "out-x"}`)
+        flagOut = !flagOut;
+        break;
     }
     if(e.target && e.target.className.split(' ').some(c => /fa-angle-*/.test(c))) {
-      if(e.target.className.split(' ').some(c => /fa-angle-(up|down)/.test(c))) {
-        toggleHide(e.target.closest('.todo').querySelector('.description-wrapper'));
+      if(e.target.className.split(' ').some(c => /fa-angle-(up|down|right)/.test(c))) {
+        let targetTodo = e.target.closest('.todo');
+        if(targetTodo){
+          toggleHide(targetTodo.querySelector('.description-wrapper'));
         e.target.classList.replace('fa-angle-up', 'fa-angle-down') || e.target.classList.replace('fa-angle-down', 'fa-angle-up');
-      }else if(e.target.className.split(' ').some(c => /fa-angle-(right|down)/.test(c))){
-        e.target.classList.replace('fa-angle-right', 'fa-angle-down') || e.target.classList.replace('fa-angle-down', 'fa-angle-right');
+        } else {
+          toggleHide(e.target.closest('.navbar-project').querySelector('.navbar-todos-list'));
+          e.target.classList.replace('fa-angle-right', 'fa-angle-down') || e.target.classList.replace('fa-angle-down', 'fa-angle-right');
+        }
       }
     }
+
     let item = e.target.closest('.todo');
     if(e.target && e.target.classList.contains('fa-edit')){
       if(isThereForm()) return false;
@@ -167,6 +184,14 @@ const domManager = (() => {
 
   document.addEventListener('dblclick', e => {
     clearSelection();
+    if(e.target && e.target.classList.contains('navbar-project-title')){
+      domTodo.contractAll();
+      pubsub.publish('navbarProject', e.target.closest('.navbar-project').dataset.id)
+    }else if (e.target && e.target.dataset.id){
+      pubsub.publish('navbarProject', e.target.closest('.navbar-project').dataset.id)
+      domTodo.contractAll();
+      unhide(document.getElementById(e.target.dataset.id).querySelector('.description-wrapper'));
+    }
   })
 })();
 

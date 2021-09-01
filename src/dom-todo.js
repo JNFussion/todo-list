@@ -1,4 +1,3 @@
-import { render } from 'mustache';
 import { pubsub } from './pubsub';
 import { hide, unhide } from './helper';
 
@@ -84,7 +83,7 @@ const domTodo = (() => {
   pubsub.subscribe('renderEditTodo', renderEdit);
   pubsub.subscribe('sortedTodos', renderIndex);
 
-  return {renderShow, renderNew, renderEdit, removeForm }
+  return {renderShow, renderNew, renderEdit, removeForm, contractAll }
 })();
 
  export {domTodo};
