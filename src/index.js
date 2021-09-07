@@ -1,11 +1,25 @@
-import { pubsub } from './pubsub';
-import { projectFactory, todoFactory } from './project';
+/* import './pubsub';
+import './project';
 import './sytlesheets/scss/main.scss';
-import { domTodo } from './dom-todo';
-import { domProject } from './dom-project'
-import { domNavbar } from './dom-navbar';
-import { dashboard } from './dashboard';
-import {domManager} from './dom';
-import { parseISO, set, startOfYesterday } from 'date-fns';
-import { priorityEnum } from './helper';
-import { DomBarSettings } from './dom-bar-settings';
+import 'date-fns';
+import './helper';
+import './dom-navbar';
+import './dom-project'
+import './dom-todo';
+import './dom-bar-settings';
+import './dom-views';
+import './dashboard';
+import './dom'; */
+
+import './sytlesheets/scss/main.scss';
+import './pubsub';
+import './project';
+import 'date-fns';
+import './helper';
+import './dashboard';
+import './dom-navbar';
+import './dom-project';
+import './dom-todo';
+import './dom';
+import './dom-views';
+import './dom-bar-settings';
