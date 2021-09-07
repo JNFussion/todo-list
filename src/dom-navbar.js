@@ -1,37 +1,50 @@
-import { projectFactory } from './project';
-import { pubsub } from './pubsub';
+import { pubsub } from "./pubsub";
 
-const Mustache = require('mustache');
+const Mustache = require("mustache");
 
 const domNavbar = (() => {
-  const projectsUl = document.querySelector('.projects-list');
-  const template = document.getElementById('navbar-project-template');
+  const template = document.getElementById("navbar-project-template");
 
   const _isHide = (project) => {
-    projectsUl.querySelector(`li[data-id=${project.id}] .navbar-todos-list`).classList.contains('hide');
-  }
+    document
+      .querySelector(
+        `.projects-list li[data-id=${project.id}] .navbar-todos-list`
+      )
+      .classList.contains("hide");
+  };
 
-  const addAllProject = (projects) => {
-    projectsUl.innerHTML = Mustache.render(template.innerHTML, {project: projects})
+  const indexProjects = (list) => {
+    list.forEach(p => {
+      addProject(p)
+    });
   }
 
   const addProject = (project) => {
-    projectsUl.innerHTML += Mustache.render(template.innerHTML, {project: project})
-  }
+    document.querySelector(".projects-list").innerHTML += Mustache.render(
+      template.innerHTML,
+      { project: project }
+    );
+  };
 
-  const updateProject = (project) => {
-    projectsUl.querySelector(`[data-id=${project.id}]`).outerHTML = Mustache.render(template.innerHTML, {project: project, hidden: !_isHide(project)})
-  }
+  const updateProject = (item) => {
+    document.querySelector(
+      `[data-id=${item.project ? item.project.id : item.id}]`
+    ).outerHTML = Mustache.render(template.innerHTML, {
+      project: item.project ? item.project : item,
+      hidden: !_isHide(item.project ? item.project : item),
+    });
+  };
 
   const removeItem = (id) => {
-    let itemToRemove = projectsUl.querySelector(`[data-id=${id}]`);
+    let itemToRemove = document.querySelector(`[data-id=${id}]`);
     itemToRemove.parentElement.removeChild(itemToRemove);
-  }
+  };
 
-  pubsub.subscribe('createProject', addProject);
-  pubsub.subscribe('showProject', updateProject);
-  pubsub.subscribe('deleteProject', removeItem);
-  pubsub.subscribe('deleteTodo', removeItem);
+  pubsub.subscribe('populateNavbar', indexProjects);
+  pubsub.subscribe("createProject", addProject);
+  pubsub.subscribe("showProject", updateProject);
+  pubsub.subscribe("createTodo", updateProject);
+  pubsub.subscribe("deleteProject", removeItem);
 })();
 
-export {domNavbar}
+export { domNavbar };
