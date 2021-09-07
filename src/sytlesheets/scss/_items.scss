@@ -39,22 +39,33 @@
   padding: 0 2em;
 }
 
-.todo-list {
+@mixin main-content {
   display: grid;
   justify-items: center;
   margin: 1em 2.5em;
-  .todo {
+  .item {
     position: relative;
     width: 900px;
     margin: .5em 0;
-    .todo-header {
+    .item-header {
       position: relative;
       display: flex;
       align-items: center;
       gap: 2em;
       padding: .5em 1em;
-      .todo-title {
+      .item-title {
         font-size: 20px;
+        .project-btn {
+          margin: 0 1em;
+          padding: .25em .5em;
+          border-radius: 5px;
+          color: #6A6A6A;
+          transition: all .5s;
+          &:hover{
+            color: #FAFAFA;
+            background-color: #1D3557;
+          }
+        }
       }
       .due-date {
         margin-left: auto;
@@ -63,7 +74,7 @@
     }
     .description-wrapper{
       margin-bottom: .75em;
-      .todo-description {
+      .item-description {
         padding: 0em 4em 1em 4em;
       }
     }
@@ -84,10 +95,30 @@
       right: 0;
       bottom: 0;
     }
-    .no-todo {
+    .no-items {
       padding-bottom: 1.5em;
       text-align: center;
       color: lighten($color: #38332e, $amount: 20%);
     }
   }
+}
+
+.main-content {
+  max-width: 1200px;
+  margin: 1.5em auto;
+  .content-title{
+    font-size: 2em;
+    font-weight: bold;
+  }
+}
+
+.content-list {
+  @include main-content;
+  $size : min-content;
+  grid-template-rows: $size;
+  grid-auto-rows: $size
+}
+
+.todo-list {
+  @include main-content;
 }

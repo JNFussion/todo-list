@@ -79,6 +79,9 @@ button {
 .navbar li .btn {
   padding: .1em .5em;
   width: 100%;
+  & > * {
+    pointer-events: none;
+  }
   i {
     font-size: 1.2em;
   }
@@ -185,7 +188,7 @@ button {
     } 
 }
 
-.todo {
+.item {
   .extensible {
     position: absolute;
     left: 50%;
