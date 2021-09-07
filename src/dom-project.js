@@ -3,22 +3,23 @@ import { pubsub } from './pubsub';
 const Mustache = require('mustache');
 
 const domProject = (() => {
-  const target = document.querySelector('.project-content');
+
+  const target = document.querySelector('.wrapper');
+  const projectViewTemplate = document.getElementById('project-view-template').innerHTML;
   const projectTemplate = document.getElementById('project-template').innerHTML;
   const formTemplate = document.getElementById('project-form-template').innerHTML;
 
   const renderShow = (project) => {
-    document.querySelector('.project').id = project.id;
-    target.innerHTML = Mustache.render(projectTemplate, { project: project });
+    target.insertAdjacentHTML('beforeend', Mustache.render(projectViewTemplate, { project: project }, {projectPartial: projectTemplate}));
   }
 
   const renderNew = (project) => {
-    document.querySelector('.project').id = ""
-    target.innerHTML = Mustache.render(formTemplate, {project});
+    if (!document.querySelector('.project')) renderShow(project);
+    document.querySelector('.project-content').innerHTML = Mustache.render(formTemplate, {project});
   }
 
   const renderEdit= (project) => {
-    target.innerHTML = Mustache.render(formTemplate, {project: project});
+    document.querySelector('.project-content').innerHTML = Mustache.render(formTemplate, {project: project});
   }
 
   pubsub.subscribe('newProject', renderNew);
@@ -26,7 +27,7 @@ const domProject = (() => {
   pubsub.subscribe('showProject', renderShow);
   pubsub.subscribe('renderEditProject', renderEdit);
 
-  return {renderShow, renderNew, renderEdit}
+  return {renderShow, renderNew, renderEdit }
 })();
 
 export { domProject };

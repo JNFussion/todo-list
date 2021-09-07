@@ -4,15 +4,20 @@ import { hide, unhide } from './helper';
 const Mustache = require('mustache');
 
 const domTodo = (() => {
-  const target = document.querySelector('.todo-list');
-  const newTodoBtn = document.querySelector('#new-todo');
-  const todoTemplate = document.getElementById('todo-template').innerHTML;
+  let target = undefined;
+  let newTodoBtn = undefined;
+  const todoTemplate = document.getElementById('item-template').innerHTML;
   const formTemplate = document.getElementById('todo-form-template').innerHTML;
   let noTodoFlag = true;
 
+  const init = () => {
+    target = document.querySelector('.todo-list');
+    newTodoBtn = document.querySelector('#new-todo');
+  }
+
   const _article = () => {
     let article = document.createElement('article');
-    article.classList.add('todo');
+    article.classList.add('item');
     return article;
   }
 
@@ -21,7 +26,7 @@ const domTodo = (() => {
   }
 
   const removeTodos = () => {
-    target.textContent = '';
+    if(target) target.textContent = '';
   }
 
   const contractAll = () => {
@@ -41,17 +46,12 @@ const domTodo = (() => {
   const renderShow = (todo) => {
     noTodoFlag && removeTodos();
     noTodoFlag = false;
-    let newArticle = _article();
-
-    if(todo) newArticle.id = todo.id;
-
-    newArticle.innerHTML = Mustache.render(todoTemplate, { todo: todo})
-    target.prepend(newArticle);
+    target.innerHTML = Mustache.render(todoTemplate, { item: todo}) + target.innerHTML
     unhide(newTodoBtn);
   }
 
   const renderNew = (todo) => {
-    if(target.querySelectorAll('.todo').length == 1 && !target.querySelectorAll('.todo')[0].id) removeTodos();
+    if(target.querySelectorAll('.item').length == 1 && !target.querySelectorAll('.item')[0].id) removeTodos();
     
     let newArticle = _article();
     newArticle.innerHTML = Mustache.render(formTemplate, {todo});
@@ -74,7 +74,9 @@ const domTodo = (() => {
   
   
   pubsub.subscribe('newProject', removeTodos);
-  pubsub.subscribe('createProject', renderIndex)
+  pubsub.subscribe('createProject', init);
+  pubsub.subscribe('showProject', init);
+  pubsub.subscribe('createProject', renderIndex);
   pubsub.subscribe('showProject', renderIndex);
   pubsub.subscribe('newTodo', contractAll);
   pubsub.subscribe('newTodo', renderNew);
@@ -82,8 +84,10 @@ const domTodo = (() => {
   pubsub.subscribe('createTodo', renderShow);
   pubsub.subscribe('renderEditTodo', renderEdit);
   pubsub.subscribe('sortedTodos', renderIndex);
+  pubsub.subscribe('projectClicked', init);
+  pubsub.subscribe('projectClicked', contractAll);
 
-  return {renderShow, renderNew, renderEdit, removeForm, contractAll }
+  return {init, renderShow, renderNew, renderEdit, removeForm, contractAll }
 })();
 
  export {domTodo};

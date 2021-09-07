@@ -1,12 +1,16 @@
 import { pubsub } from "./pubsub";
 
 const DomBarSettings = (() => {
-  const barSettings = document.querySelector('.settings-bar');
-  const optionsList = { 
-    ORDER: barSettings.querySelectorAll('li button'), 
-    DIRECTION: barSettings.querySelectorAll('#direction-order i'),
-    STYLE: barSettings.querySelectorAll('#style-grid i')
-  };
+  let barSettings = null;
+  let optionsList = {};
+
+  const init = () => {
+    barSettings = document.querySelector('.settings-bar');
+    optionsList = { 
+      ORDER: barSettings.querySelectorAll('li button'), 
+      DIRECTION: barSettings.querySelectorAll('#direction-order i'),
+    }
+  }
 
   const isCurrent = (btn) => {
     btn.classList.contains('current');
@@ -18,17 +22,15 @@ const DomBarSettings = (() => {
 
   const setCurrent = (current) => {
     let type = "ORDER";
-    if (current.tagName != 'button') {
-      if(current.className.split(' ').some(c => /fa-sort-*/.test(c))){
-        type = "DIRECTION";
-      }else if (current.className.split(' ').some(c => /fa-grip-*/.test(c))){
-        type = "STYLE";
-      }
+    if(current.className.split(' ').some(c => /fa-sort-*/.test(c))){
+      type = "DIRECTION";
     }
     _removeCurrent(optionsList[type]);
     current.classList.add('current');
   }
 
+  pubsub.subscribe('createProject', init)
+  pubsub.subscribe('showProject', init)
   pubsub.subscribe('swapSelectBarOptions', setCurrent)
 
   return {isCurrent}
