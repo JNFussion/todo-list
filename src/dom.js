@@ -1,17 +1,13 @@
-import { parseISO, set, startOfYesterday } from 'date-fns';
-import {domProject} from './dom-project';
+import { parseISO, set } from 'date-fns';
 import {domTodo} from './dom-todo';
 import { projectFactory, todoFactory } from './project';
 import { pubsub } from './pubsub';
-import { hide, unhide, priorityEnum, toggleHide } from './helper';
-import { DomBarSettings } from './dom-bar-settings';
+import { unhide, priorityEnum, toggleHide } from './helper';
 import { nanoid } from 'nanoid';
 import { dashboard } from './dashboard';
-import { domNavbar } from './dom-navbar';
 
 const domManager = (() => {
 
-  const navbar = document.querySelector('.navbar');
   let flagOut = false;
 
   const _getFullDate = (date, time) => {
@@ -39,7 +35,7 @@ const domManager = (() => {
       priorityEnum[formData.get(`${type}[priority]`)], 
       dueDate);
   }
-
+  
   const clearSelection = () => {
     if(document.selection && document.selection.empty) {
         document.selection.empty();
@@ -57,6 +53,12 @@ const domManager = (() => {
   }
 
   /* EVENTS */
+
+  window.addEventListener("load", function(event) {
+    dashboard.loadLocalProjects();
+    pubsub.publish('showHome', dashboard.getProjects())
+    pubsub.publish('populateNavbar', dashboard.getProjects())
+  });
 
   document.addEventListener('click',function(e){
     switch (e.target && e.target.id) {
@@ -93,19 +95,36 @@ const domManager = (() => {
         pubsub.publish('swapOrderOption', true);
         break;
       case 'toggle-navbar':
+        let navbar = document.querySelector('.navbar');
         if(!navbar.classList.contains('slide-in-x') && !navbar.classList.contains('slide-out-x')){
           navbar.classList.add('slide-in-x')  
         }
-
+        console.log(navbar)
         navbar.classList.replace(`slide-${flagOut ? "out-x" : "in-x"}`, `slide-${flagOut ? "in-x" : "out-x"}`)
         flagOut = !flagOut;
+        break;
+      case 'home-btn':
+        pubsub.publish('noCurrentProject', undefined);
+        pubsub.publish('showHome', dashboard.getProjects());
+        break;
+      case 'today-btn':
+        pubsub.publish('noCurrentProject', undefined);
+        pubsub.publish('showToday', dashboard.sortBy('today'));
+        break;
+      case 'upcoming-btn':
+        pubsub.publish('noCurrentProject', undefined);
+        pubsub.publish('showUpcoming', dashboard.sortBy('upcoming', true));
+        break;
+      case 'priority-btn':
+        pubsub.publish('noCurrentProject', undefined);
+        pubsub.publish('showPriority', dashboard.sortBy('priority', true));
         break;
     }
     if(e.target && e.target.className.split(' ').some(c => /fa-angle-*/.test(c))) {
       if(e.target.className.split(' ').some(c => /fa-angle-(up|down|right)/.test(c))) {
-        let targetTodo = e.target.closest('.todo');
-        if(targetTodo){
-          toggleHide(targetTodo.querySelector('.description-wrapper'));
+        let targetItem = e.target.closest('.item');
+        if(targetItem){
+          toggleHide(targetItem.querySelector('.description-wrapper'));
         e.target.classList.replace('fa-angle-up', 'fa-angle-down') || e.target.classList.replace('fa-angle-down', 'fa-angle-up');
         } else {
           toggleHide(e.target.closest('.navbar-project').querySelector('.navbar-todos-list'));
@@ -114,10 +133,10 @@ const domManager = (() => {
       }
     }
 
-    let item = e.target.closest('.todo');
+    let item = e.target.closest('.item');
     if(e.target && e.target.classList.contains('fa-edit')){
       if(isThereForm()) return false;
-      if(item){
+      if(item && item.id.startsWith('todo')){
         pubsub.publish('editTodo', item.id)
       }else {
         pubsub.publish('editProject', e.target.closest('.project').id);
@@ -132,7 +151,8 @@ const domManager = (() => {
         }
       }
     }else if (e.target && e.target.classList.contains('cancel-btn')){
-      pubsub.publish('showProject', dashboard.getCurrentProject())
+      let p = dashboard.getCurrentProject()
+      p ? pubsub.publish('showProject', p) : pubsub.publish('showHome', dashboard.getProjects());
     }
   });
 
@@ -151,7 +171,7 @@ const domManager = (() => {
           }
         }else {
           if(project.isObjectValid()){
-            project.id = nanoid();
+            project.id = "project-" + nanoid();
             project.created_at = new Date()
             pubsub.publish('createProject', project);
           }else {
@@ -161,7 +181,7 @@ const domManager = (() => {
         break;
       case 'form-todo':
         let todo = _createItem('todo');
-        let todoId = e.target.closest('.todo').id;
+        let todoId = e.target.closest('.item').id;
         if(todoId){
           todo.id = todoId;
           if(todo.isObjectValid()){
@@ -171,7 +191,7 @@ const domManager = (() => {
           }
         } else {
           if(todo.isObjectValid()){
-            todo.id = nanoid();
+            todo.id = "todo-" + nanoid();
             todo.created_at = new Date()
             pubsub.publish('createTodo', todo);
           }else {
@@ -185,12 +205,16 @@ const domManager = (() => {
   document.addEventListener('dblclick', e => {
     clearSelection();
     if(e.target && e.target.classList.contains('navbar-project-title')){
-      domTodo.contractAll();
-      pubsub.publish('navbarProject', e.target.closest('.navbar-project').dataset.id)
+      pubsub.publish('projectClicked', e.target.closest('.navbar-project').dataset.id)
     }else if (e.target && e.target.dataset.id){
-      pubsub.publish('navbarProject', e.target.closest('.navbar-project').dataset.id)
-      domTodo.contractAll();
+      if(e.target.dataset.id.startsWith('project')){
+        pubsub.publish('projectClicked', e.target.dataset.id)
+      }else {
+        pubsub.publish('projectClicked', e.target.closest('.navbar-project').dataset.id)
+      }
+      
       unhide(document.getElementById(e.target.dataset.id).querySelector('.description-wrapper'));
+      document.getElementById(e.target.dataset.id).querySelector('.fa-angle-down').classList.replace('fa-angle-down', 'fa-angle-up')
     }
   })
 })();
