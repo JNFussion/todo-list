@@ -73,7 +73,7 @@
         </div>
         <ul class="navbar-todos-list {{#hidden}}{{/hidden}}{{^hidden}}{{hidden}}hide{{/hidden}}">
           {{#getTodoList}}
-          <li data-id="{{id}}" class="navbar-todo"><i class="far fa-circle fa-sm {{priority.name}}"></i>{{title}}</li>
+          <li data-id="{{id}}" class="navbar-todo {{#checked}}checked{{/checked}}"><i class="far fa-circle fa-sm {{priority.name}}"></i>{{title}}</li>
           {{/getTodoList}}
         </ul>
       </li>
@@ -175,17 +175,20 @@
     </script>
     <script id="item-template" type="text/template">
       {{#item}}
-        <article class="item" id="{{id}}">
+        <article class="item {{#checked}}checked{{/checked}}" id="{{id}}">
           <header class="item-header">
             {{^view}}
             <button class="complete-btn btn"><i class="fas fa-check"></i></button>
             {{/view}}
             <span><i class="far fa-circle fa-sm {{priority.name}}"></i></span>
             <h3 class="item-title">
-              {{title}} 
+              {{title}}
               {{#view}}
               {{#project}}
               <button class="project-btn" data-id="{{project.id}}">{{project.title}}</button>
+              {{/project}}
+              {{^project}}
+              <button class="project-btn" data-id="{{id}}"><span>go</span><span><i class="fas fa-arrow-right"></i></span></button>
               {{/project}}
               {{/view}}
             </h3>

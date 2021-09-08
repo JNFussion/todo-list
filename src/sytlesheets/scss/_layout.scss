@@ -58,6 +58,9 @@
         border-radius: 2px;
         cursor: pointer;
         transition: all .2s;
+        &.checked {
+          opacity: .2;
+        }
         &:hover {
           background-color: darken($color: #F8F9FA, $amount: 20%);
         }

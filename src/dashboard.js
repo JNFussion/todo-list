@@ -8,13 +8,21 @@ const dashboard = (() => {
   let orderDesc = true;
 
   const getProjects = () => projectsList;
+  const getCurrentProject = () => currentProject;
+  const getTodoFromProjects = (id) => {
+    for (let p of projectsList) {
+      for (let t of p.getTodoList()) {
+        if(t.id == id) return t;
+      }
+    }
+    return -1;
+  }
   const addProject = (project) => projectsList.push(project)
   const addTodoToCurrentProject = (todo) => currentProject.addTodoItem(todo) 
-  const getCurrentProject = () => currentProject;
   const setCurrentProject = (project) => currentProject = project;
   const setProjectToTodo = (todo) => todo.project = currentProject; 
   const setOrder = (order) => orderDesc = order;
-  
+
   const removeCurrentFromProjectList = () => {
     let index = projectsList.indexOf(currentProject);
     projectsList.splice(index, 1);
@@ -33,14 +41,8 @@ const dashboard = (() => {
     }
   }
   const editTodo = (id) => {
-    let wantedTodo = {};
-    for (const p of projectsList) {
-      for (const t of p.getTodoList()) {
-        if(t.id == id) wantedTodo = t;
-      }
-    }
-    pubsub.publish('renderEditTodo', wantedTodo);
-    return wantedTodo
+    pubsub.publish('renderEditTodo', getTodoFromProjects(id));
+    return getTodoFromProjects(id);
   }
 
   const updateTodo = (todo) => {
@@ -69,6 +71,13 @@ const dashboard = (() => {
       pubsub.publish('showProject', currentProject);
     }
   }
+
+  const completeTodo = (id) => {
+    let checkedTodo = getTodoFromProjects(id);
+    checkedTodo.checked = true;
+    saveLocalProject(checkedTodo);
+    pubsub.publish('showProject', checkedTodo.project);
+  } 
 
   const updateOrderList = () => {
     currentProject.reverseList();
@@ -127,6 +136,7 @@ const dashboard = (() => {
         let newTodo = todoFactory(t.title, t.description, t.priority, new Date(t.dueDate), newProject);
         newTodo.id = t.id;
         newTodo.created_at = new Date(t.created_at);
+        newTodo.checked = t.checked;
         newProject.addTodoItem(newTodo);
       })
       addProject(newProject);
@@ -156,7 +166,7 @@ const dashboard = (() => {
   pubsub.subscribe('createProject', saveLocalProject);
   pubsub.subscribe('editProject', editProject);
   pubsub.subscribe('updateProject', updateProject);
-  pubsub.subscribe('updateProject', saveLocalProject)
+  pubsub.subscribe('updateProject', saveLocalProject);
   pubsub.subscribe('deleteProject', deleteProject);
   pubsub.subscribe('deleteProject', removeLocalProject);
   pubsub.subscribe('createTodo', setProjectToTodo);
@@ -172,6 +182,7 @@ const dashboard = (() => {
   pubsub.subscribe('swapOrderOption', updateOrderList);
   pubsub.subscribe('projectClicked', goToProject);
   pubsub.subscribe('noCurrentProject', setCurrentProject);
+  pubsub.subscribe('completedTodo', completeTodo)
 
   return { getProjects, addProject, getCurrentProject, setCurrentProject, sortCurrentProject, sortBy, loadLocalProjects };
 })();

@@ -47,6 +47,9 @@
     position: relative;
     width: 900px;
     margin: .5em 0;
+    &.checked {
+      opacity: .2;
+    }
     .item-header {
       position: relative;
       display: flex;
@@ -61,6 +64,12 @@
           border-radius: 5px;
           color: #6A6A6A;
           transition: all .5s;
+          .fa-arrow-right {
+            margin: 0 .4em;
+          }
+          & > * {
+            pointer-events: none;
+          }
           &:hover{
             color: #FAFAFA;
             background-color: #1D3557;

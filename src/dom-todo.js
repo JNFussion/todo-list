@@ -39,7 +39,8 @@ const domTodo = (() => {
       renderShow(null);
       noTodoFlag = true;
     }else {
-      project.getTodoList().forEach(todo => renderShow(todo));
+      project.getTodoList().filter(t => t.checked).forEach(todo => renderShow(todo));
+      project.getTodoList().filter(t => !t.checked).forEach(todo => renderShow(todo));
     }
   }
 

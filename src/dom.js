@@ -61,6 +61,7 @@ const domManager = (() => {
   });
 
   document.addEventListener('click',function(e){
+    console.log(e.target)
     switch (e.target && e.target.id) {
       case 'new-project':
         pubsub.publish('newProject');
@@ -150,9 +151,12 @@ const domManager = (() => {
           pubsub.publish('deleteProject', e.target.closest('.project').id);
         }
       }
-    }else if (e.target && e.target.classList.contains('cancel-btn')){
+    }else if (e.target && e.target.classList.contains('cancel-btn')) {
       let p = dashboard.getCurrentProject()
       p ? pubsub.publish('showProject', p) : pubsub.publish('showHome', dashboard.getProjects());
+    }else if (e.target && e.target.classList.contains('complete-btn')){
+      if(e.target.closest('.item').classList.contains('checked')) return false;
+      pubsub.publish('completedTodo', e.target.closest('.item').id)
     }
   });
 
