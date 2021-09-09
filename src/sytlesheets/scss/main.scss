@@ -78,14 +78,16 @@ button {
 
 .navbar li .btn {
   padding: .1em .5em;
-  width: 100%;
+  &:not(.default-btn){
+    width: 100%;
+  }
   & > * {
     pointer-events: none;
   }
   i {
     font-size: 1.2em;
   }
-  &:hover {
+  &:hover:not(.default-btn) {
     background-color: darken($color: #F8F9FA, $amount: 20%);
   }
 }
@@ -105,11 +107,24 @@ button {
   pointer-events: none;
 }
 
-#default-btn {
-  display: block;
-  width: max-content;
-  margin: 2em auto;
+.default-btn {
+  transition: all .2s;
+  .far.fa-heart{
+    text-shadow: 1px 0 2px rgba(0, 0, 0, .5);
+  }
+  .fas.fa-heart {
+    color: #ff2020;
+    text-shadow: 1px 0 2px black;
+  }
+  &:hover .fas.fa-heart{
+    color: darken($color: #ff2020, $amount: 20%);
+  }
+  &:hover .far.fa-heart {
+    color: #ff2020;
+  }
 }
+
+
 
 #new-todo {
   font-size: 2.5em;
