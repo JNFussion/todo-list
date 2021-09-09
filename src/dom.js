@@ -212,7 +212,7 @@ const domManager = (() => {
     }
   })
 
-  document.addEventListener('dblclick', e => {
+  const doubleHandler = (e) => {
     clearSelection();
     if(e.target && e.target.classList.contains('navbar-project-title')){
       pubsub.publish('projectClicked', e.target.closest('.navbar-project').dataset.id)
@@ -225,6 +225,12 @@ const domManager = (() => {
         document.getElementById(e.target.dataset.id).querySelector('.fa-angle-down, .fa-angle-up').classList.replace('fa-angle-down', 'fa-angle-up')
       }
     }
+  }
+
+  document.addEventListener('dblclick', doubleHandler);
+  document.addEventListener('touchstart', e => {
+    e.preventDefault();
+    doubleHandler(e);
   })
 })();
 
