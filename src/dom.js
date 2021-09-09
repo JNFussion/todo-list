@@ -65,7 +65,6 @@ const domManager = (() => {
   });
 
   document.addEventListener('click',function(e){
-    console.log(e.target)
     switch (e.target && e.target.id) {
       case 'new-project':
         pubsub.publish('newProject');
@@ -104,7 +103,6 @@ const domManager = (() => {
         if(!navbar.classList.contains('slide-in-x') && !navbar.classList.contains('slide-out-x')){
           navbar.classList.add('slide-in-x')  
         }
-        console.log(navbar)
         navbar.classList.replace(`slide-${flagOut ? "out-x" : "in-x"}`, `slide-${flagOut ? "in-x" : "out-x"}`)
         flagOut = !flagOut;
         break;
@@ -232,6 +230,16 @@ const domManager = (() => {
     e.preventDefault();
     doubleHandler(e);
   })
+
+
+const mediaQuery = window.matchMedia('(max-width: 1024px)')
+mediaQuery.addEventListener('change', e => {
+  if(e.matches){
+    document.querySelector('.navbar').classList.add('slide-out-x') 
+  }else {
+    document.querySelector('.navbar').classList.replace('slide-out-x', 'slide-in-x');
+  }
+});
 })();
 
 export {domManager};

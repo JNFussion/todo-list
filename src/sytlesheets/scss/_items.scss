@@ -1,6 +1,6 @@
 .project {
+  flex: 1 1 auto;
   max-width: 1200px;
-  width: 1200px;
   margin: 0 auto;
   padding: 0 2em;
   .project-header {
@@ -40,12 +40,14 @@
 }
 
 @mixin main-content {
-  display: grid;
-  justify-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 1em 2.5em;
   .item {
     position: relative;
-    width: 900px;
+    width: 100%;
+    max-width: 900px;
     margin: .5em 0;
     &.checked {
       opacity: .2;
@@ -113,8 +115,10 @@
 }
 
 .main-content {
+  flex: 1 1 auto;
   max-width: 1200px;
   margin: 1.5em auto;
+  padding: 0 2em;
   .content-title{
     font-size: 2em;
     font-weight: bold;
@@ -123,9 +127,6 @@
 
 .content-list {
   @include main-content;
-  $size : min-content;
-  grid-template-rows: $size;
-  grid-auto-rows: $size
 }
 
 .todo-list {

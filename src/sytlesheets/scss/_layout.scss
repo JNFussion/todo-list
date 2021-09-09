@@ -1,4 +1,5 @@
 .main-header {
+  z-index: 999;
   position: relative;
   display: flex;
   align-items: center;
@@ -7,23 +8,19 @@
   background-image: linear-gradient(#A8DADC, darken($color: #A8DADC, $amount: 10%));
   box-shadow: 0 1px 15px #0C1D1D;
   h1 {
-    display: grid;
-    align-items: center;
-    justify-items: center;
     font-size: 36px;
+    font-weight: bold;
   }
 }
 
 .wrapper {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  height: 820px;
+  flex: 1 1 auto;
+  display: flex;
 }
 
 /* NAVBAR ON LEFT SIDE */
 .navbar {
   width: 360px;
-  max-width: 360px;
   padding: 1em 0;
   background-color: #F8F9FA;
   border-right: 1px solid darken($color: #F8F9FA, $amount: 10%);
@@ -94,6 +91,17 @@
       background-color: darken($color: #F8F9FA, $amount: 10%);
       transform: translateX(-50%);
     }
+  }
+}
+
+@media (max-width: 1024px) {
+  .wrapper{
+    position: relative;
+  }
+  .navbar{
+    z-index: 100;
+    position: absolute;
+    height: 100%;
   }
 }
 
