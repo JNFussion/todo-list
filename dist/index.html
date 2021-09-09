@@ -49,9 +49,6 @@
         <div class="projects-list-wrapper">
           <h2>Projects</h2>
           <ul class="projects-list"></ul>
-          <button id="default-btn" class="btn primary rounded-corners">
-            Set Default
-          </button>
         </div>
       </nav>
     </div>
@@ -63,15 +60,18 @@
           <button class="extensible">
             <span class="fa-stack fa-2x">
               <i class="far fa-circle fa-stack-2x"></i>
-              <i class="fas fa-angle-down fa-stack-1x"></i>
+              <i class="fas {{#hidden}}fa-angle-right{{/hidden}}{{^hidden}}fa-angle-down{{/hidden}} fa-stack-1x"></i>
             </span>
           </button>
           <span class="navbar-project-title">
             <i class="fas fa-tasks"></i>
             {{title}}
           </span>
+          <button class="default-btn btn">
+            <i class="{{#default}}fas{{/default}}{{^default}}far{{/default}} fa-heart"></i>
+          </button>
         </div>
-        <ul class="navbar-todos-list {{#hidden}}{{/hidden}}{{^hidden}}{{hidden}}hide{{/hidden}}">
+        <ul class="navbar-todos-list {{#hidden}}{{/hidden}}{{^hidden}}hide{{/hidden}}">
           {{#getTodoList}}
           <li data-id="{{id}}" class="navbar-todo {{#checked}}checked{{/checked}}"><i class="far fa-circle fa-sm {{priority.name}}"></i>{{title}}</li>
           {{/getTodoList}}

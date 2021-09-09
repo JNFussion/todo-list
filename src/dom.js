@@ -25,8 +25,7 @@ const domManager = (() => {
     if(type == 'project'){
       return projectFactory(
         formData.get(`${type}[title]`), 
-        formData.get(`${type}[description]`), 
-        priorityEnum[formData.get(`${type}[priority]`)],
+        formData.get(`${type}[description]`),
         dueDate);
     }
     return todoFactory(
@@ -56,8 +55,13 @@ const domManager = (() => {
 
   window.addEventListener("load", function(event) {
     dashboard.loadLocalProjects();
-    pubsub.publish('showHome', dashboard.getProjects())
     pubsub.publish('populateNavbar', dashboard.getProjects())
+    if(dashboard.getDefaultProject()) {
+      pubsub.publish('showProject', dashboard.getDefaultProject());
+      dashboard.setCurrentProject(dashboard.getDefaultProject());
+    }else {
+      pubsub.publish('showHome', dashboard.getProjects())
+    }
   });
 
   document.addEventListener('click',function(e){
@@ -157,6 +161,8 @@ const domManager = (() => {
     }else if (e.target && e.target.classList.contains('complete-btn')){
       if(e.target.closest('.item').classList.contains('checked')) return false;
       pubsub.publish('completedTodo', e.target.closest('.item').id)
+    }else if (e.target && e.target.classList.contains('default-btn')) {
+      pubsub.publish('defaultProject', e.target.closest('.navbar-project').dataset.id)
     }
   });
 
@@ -215,10 +221,9 @@ const domManager = (() => {
         pubsub.publish('projectClicked', e.target.dataset.id)
       }else {
         pubsub.publish('projectClicked', e.target.closest('.navbar-project').dataset.id)
+        unhide(document.getElementById(e.target.dataset.id).querySelector('.description-wrapper'));
+        document.getElementById(e.target.dataset.id).querySelector('.fa-angle-down, .fa-angle-up').classList.replace('fa-angle-down', 'fa-angle-up')
       }
-      
-      unhide(document.getElementById(e.target.dataset.id).querySelector('.description-wrapper'));
-      document.getElementById(e.target.dataset.id).querySelector('.fa-angle-down').classList.replace('fa-angle-down', 'fa-angle-up')
     }
   })
 })();

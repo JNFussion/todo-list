@@ -5,8 +5,10 @@ import {add, compareAsc, compareDesc, isAfter, isBefore, isToday, startOfTomorro
 const dashboard = (() => {
   let projectsList = [];
   let currentProject = undefined;
+  let defaultProject = undefined;
   let orderDesc = true;
 
+  const getDefaultProject = () => defaultProject;
   const getProjects = () => projectsList;
   const getCurrentProject = () => currentProject;
   const getTodoFromProjects = (id) => {
@@ -22,6 +24,22 @@ const dashboard = (() => {
   const setCurrentProject = (project) => currentProject = project;
   const setProjectToTodo = (todo) => todo.project = currentProject; 
   const setOrder = (order) => orderDesc = order;
+  const setDefaultProject = (id) => {
+    if(defaultProject) {
+      defaultProject.default = false;
+      saveLocalProject(defaultProject);
+      pubsub.publish('refreshNavbar', defaultProject);
+      if(defaultProject.id == id){
+        defaultProject = undefined;
+        return;
+      }
+    }
+    let p = projectsList.find(p => p.id == id);
+    p.default = true;
+    defaultProject = p;
+    saveLocalProject(defaultProject);
+    pubsub.publish('refreshNavbar', defaultProject);
+  }
 
   const removeCurrentFromProjectList = () => {
     let index = projectsList.indexOf(currentProject);
@@ -57,6 +75,7 @@ const dashboard = (() => {
     let todos = currentProject.getTodoList();
     Object.assign(currentProject, project);
     currentProject.setTodoList(todos);
+    currentProject.setPriority();
     pubsub.publish('showProject', currentProject);
   }
 
@@ -125,13 +144,16 @@ const dashboard = (() => {
 
   const loadLocalProjects = () => {
     projectsList.length = 0;
-    
     for (var i = 0; i < localStorage.length; i++){
       let tempObj = JSON.parse(localStorage.getItem(localStorage.key(i)));
-      let newProject = projectFactory(tempObj.title, tempObj.description, tempObj.priority, new Date(tempObj.dueDate));
+      let newProject = projectFactory(tempObj.title, tempObj.description, new Date(tempObj.dueDate));
       newProject.id = tempObj.id;
+      newProject.priority = tempObj.priority;
       newProject.created_at = new Date(tempObj.created_at);
-      
+      newProject.default = tempObj.default;
+
+      if(newProject.default) defaultProject = newProject;
+
       tempObj.todos.forEach(t => {
         let newTodo = todoFactory(t.title, t.description, t.priority, new Date(t.dueDate), newProject);
         newTodo.id = t.id;
@@ -182,9 +204,10 @@ const dashboard = (() => {
   pubsub.subscribe('swapOrderOption', updateOrderList);
   pubsub.subscribe('projectClicked', goToProject);
   pubsub.subscribe('noCurrentProject', setCurrentProject);
-  pubsub.subscribe('completedTodo', completeTodo)
+  pubsub.subscribe('completedTodo', completeTodo);
+  pubsub.subscribe('defaultProject', setDefaultProject);
 
-  return { getProjects, addProject, getCurrentProject, setCurrentProject, sortCurrentProject, sortBy, loadLocalProjects };
+  return {getDefaultProject, getProjects, addProject, getCurrentProject, setCurrentProject, sortCurrentProject, sortBy, loadLocalProjects };
 })();
 
 export { dashboard };

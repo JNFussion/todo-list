@@ -1,5 +1,6 @@
 import { format, getHours, isFuture, isToday, compareAsc, compareDesc } from "date-fns";
 import isValid from "date-fns/isValid";
+import { priorityEnum } from "./helper";
 
 const proto = (title, description, priority, dueDate) => {
 
@@ -34,7 +35,7 @@ const proto = (title, description, priority, dueDate) => {
       id : null,
       title: title, 
       description: description, 
-      priority: priority, 
+      priority: priority,
       dueDate: dueDate, 
       created_at : null,},
     {isObjectValid, getFormatedDueDate, getDate, getTime })
@@ -45,8 +46,10 @@ const todoFactory = (title, description, priority, dueDate, project) => {
   return Object.assign(todo, proto(title, description, priority, dueDate));
 }
 
-const projectFactory = (title, description, priority, dueDate) => {
+const projectFactory = (title, description, dueDate) => {
+  let basicProject = proto(title, description, undefined, dueDate);
   let todoList = [];
+
   
   const isCheck = () => {
     return todoList.every( item => item.checked);
@@ -55,12 +58,35 @@ const projectFactory = (title, description, priority, dueDate) => {
   const getTodoList = () => todoList;
   const setTodoList = (list) => todoList = list;
 
+  const setPriority = () => {
+    if (todoList.length == 0) return;
+    
+    let maxPriority = undefined;
+    let prioritySum = todoList.reduce(function(obj, item) {
+      if (!obj[item.priority.name]) {
+        obj[item.priority.name] = 0;
+      }
+      obj[item.priority.name]++;
+      return obj;
+    }, {});
+    prioritySum = Object.entries(prioritySum);
+    maxPriority = prioritySum.reduce((max, item) => { 
+      if(item[1] > max[1]){
+         max = item;
+       }
+      return max;
+    }, prioritySum[0])[0].toUpperCase();
+    basicProject.priority = priorityEnum[maxPriority];
+  }
+
   const addTodoItem = (todoItem) => {
     todoList.push(todoItem);
+    setPriority();
   }
   
   const removeTodoItem = (index) => {
     todoList.splice(index, 1);
+    setPriority();
   }
 
   const sortByCreatedAt = (direction) => {
@@ -91,8 +117,8 @@ const projectFactory = (title, description, priority, dueDate) => {
     todoList.reverse()
   }
 
-  const project = { isCheck, getTodoList, setTodoList, addTodoItem, removeTodoItem, sortByCreatedAt, sortByPriority, sortByDueDate, reverseList }
-  return Object.assign(project, proto(title, description, priority, dueDate));
+  const project = { default:false, isCheck, getTodoList, setTodoList, setPriority, addTodoItem, removeTodoItem, sortByCreatedAt, sortByPriority, sortByDueDate, reverseList }
+  return Object.assign(basicProject, project);
 }
 
 export {todoFactory, projectFactory};
