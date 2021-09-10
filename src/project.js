@@ -2,14 +2,24 @@ import { format, getHours, isFuture, isToday, compareAsc, compareDesc } from "da
 import isValid from "date-fns/isValid";
 import { priorityEnum } from "./helper";
 
+/**
+ * Prototype object for todo factory function and project factory function.
+ * @param  {String} tittle
+ * @param  {String} description
+ * @param  {priorityEnum} priority
+ * @param  {Date} dueDate
+ */
+
 const proto = (title, description, priority, dueDate) => {
 
   const _isValidDate = () => {
     return !isValid(dueDate) || isFuture(dueDate);
   }
+
   const isObjectValid = () => {
     return title != '' && _isValidDate();
   }
+
   const getFormatedDueDate = () => {
     if(isValid(dueDate)){
       if(isToday(dueDate)){
@@ -22,10 +32,12 @@ const proto = (title, description, priority, dueDate) => {
     }
     return 'No deadline';
   }
+
   const getDate = () => {
     if(!isValid(dueDate)) return "";
     return format(dueDate, "Y-MM-dd");
   }
+
   const getTime = () => {
     if(!isValid(dueDate)) return "";
     return format(dueDate, "kk:mm")
@@ -41,10 +53,22 @@ const proto = (title, description, priority, dueDate) => {
     {isObjectValid, getFormatedDueDate, getDate, getTime })
 }
 
+/**
+ *  Factory function for todo objects.
+ *  It adds a reference to the parent project and a boolean attribute to indicate if the task has been completed.
+ */
+
 const todoFactory = (title, description, priority, dueDate, project) => {
   const todo = { checked: false, project: project}
   return Object.assign(todo, proto(title, description, priority, dueDate));
 }
+
+/**
+ *  Factory function for project objects.
+ *  It adds an array for all todos that belongs to.
+ *  CRUD functions and sorting functions for the array.
+ *  
+ */
 
 const projectFactory = (title, description, dueDate) => {
   let basicProject = proto(title, description, undefined, dueDate);
@@ -57,6 +81,11 @@ const projectFactory = (title, description, dueDate) => {
 
   const getTodoList = () => todoList;
   const setTodoList = (list) => todoList = list;
+
+  /**
+   * It set the priority of the project in fucntion of the todos.
+   * Counts each type of priority, then find the max type and assing it to project's priority.
+   */
 
   const setPriority = () => {
     if (todoList.length == 0) return;

@@ -2,6 +2,10 @@ import { pubsub } from './pubsub';
 
 const Mustache = require('mustache');
 
+/**
+ * Module manages  the DOM related with the project objects
+ */
+
 const domProject = (() => {
 
   const target = document.querySelector('.wrapper');

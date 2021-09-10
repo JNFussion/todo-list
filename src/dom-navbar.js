@@ -3,6 +3,11 @@ import { pubsub } from "./pubsub";
 
 const Mustache = require("mustache");
 
+/**
+ * Module for managing the DOM of the navbar on left side.
+ * It add, remove or update the projects and todos displayed in the navbar.
+ */
+
 const domNavbar = (() => {
   const template = document.getElementById("navbar-project-template");
 

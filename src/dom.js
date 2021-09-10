@@ -6,6 +6,11 @@ import { unhide, priorityEnum, toggleHide } from './helper';
 import { nanoid } from 'nanoid';
 import { dashboard } from './dashboard';
 
+/**
+ * It manages the DOM of the page. Give functionality to the buttons of the page.
+ * It mostly use the pubsub to emit the necesary data that other dom-* files need to work.
+ */
+
 const domManager = (() => {
 
   let flagOut = false;

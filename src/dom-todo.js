@@ -3,6 +3,10 @@ import { hide, unhide } from './helper';
 
 const Mustache = require('mustache');
 
+/**
+ * Module manages  the DOM related with the todos objects
+ */
+
 const domTodo = (() => {
   let target = undefined;
   let newTodoBtn = undefined;

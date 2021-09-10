@@ -1,8 +1,17 @@
 import { pubsub } from "./pubsub";
 
+/**
+ * Module for managing the DOM of the blue bar with sorting option for project's todos.
+ * It add or remove current class of the buttons.
+ */
+
 const DomBarSettings = (() => {
   let barSettings = null;
   let optionsList = {};
+
+  /**
+   * Because the bar can be remove from the DOM, this will run every time an project is displayed.
+   */
 
   const init = () => {
     barSettings = document.querySelector('.settings-bar');

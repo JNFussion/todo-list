@@ -2,6 +2,17 @@ import { pubsub } from "./pubsub";
 import {projectFactory, todoFactory} from './project';
 import {add, compareAsc, compareDesc, isAfter, isBefore, isToday, startOfTomorrow } from 'date-fns';
 
+/**
+ * Module for the logic of the site.
+ * It contains CRUD, sorting functions.
+ * 
+ * projectList => Array with all the projects.
+ * currentProject => Project that is currently on screen.
+ * defaultProject => A favourite project.
+ * orderDesc => Boolean variable used for the sorting function.
+ */
+
+
 const dashboard = (() => {
   let projectsList = [];
   let currentProject = undefined;
@@ -115,6 +126,15 @@ const dashboard = (() => {
     pubsub.publish('showProject', currentProject);
   }
 
+  /**
+   * Get all the todos form every project and sort them.
+   * 
+   * @param {String} byType Indicate the type of sorting which are "today", "upcoming" and "priority".
+   * @param {Boolean} orderDesc Descending or Ascending order.
+   * @returns {Array} Sorted todos.
+   */
+
+
   const sortBy = (byType, orderDesc) => {
     let allTodos = [];
     projectsList.forEach(p => allTodos = allTodos.concat(p.getTodoList()))
@@ -164,6 +184,11 @@ const dashboard = (() => {
       addProject(newProject);
     }
   }
+
+  /**
+   * It save a project locally .
+   * @param {(Object|String)} item Can be a project object, a todo object or the id of a todo object.
+   */
 
   const saveLocalProject = (item) => {
     let projectsToSave = undefined
