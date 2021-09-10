@@ -12,8 +12,7 @@ import { dashboard } from './dashboard';
  */
 
 const domManager = (() => {
-
-  let flagOut = false;
+  const mediaQuery = window.matchMedia('(max-width: 1024px)')
 
   const _getFullDate = (date, time) => {
       if(!date && time) {
@@ -56,7 +55,17 @@ const domManager = (() => {
     return true;
   }
 
+  const slideNavbarScreenSize = (e) => {
+    if(e.matches){
+      document.querySelector('.navbar').classList.add('slide-out-x');
+    }else {
+      document.querySelector('.navbar').classList.replace('slide-out-x', 'slide-in-x');
+    }
+  }
+
   /* EVENTS */
+
+  mediaQuery.addEventListener('change', slideNavbarScreenSize);
 
   window.addEventListener("load", function(event) {
     dashboard.loadLocalProjects();
@@ -67,6 +76,7 @@ const domManager = (() => {
     }else {
       pubsub.publish('showHome', dashboard.getProjects())
     }
+    slideNavbarScreenSize(mediaQuery);
   });
 
   document.addEventListener('click',function(e){
@@ -106,10 +116,10 @@ const domManager = (() => {
       case 'toggle-navbar':
         let navbar = document.querySelector('.navbar');
         if(!navbar.classList.contains('slide-in-x') && !navbar.classList.contains('slide-out-x')){
-          navbar.classList.add('slide-in-x')  
+          navbar.classList.add('slide-out-x')
+          break; 
         }
-        navbar.classList.replace(`slide-${flagOut ? "out-x" : "in-x"}`, `slide-${flagOut ? "in-x" : "out-x"}`)
-        flagOut = !flagOut;
+        navbar.classList.replace("slide-out-x","slide-in-x") || navbar.classList.replace("slide-in-x","slide-out-x")
         break;
       case 'home-btn':
         pubsub.publish('noCurrentProject', undefined);
@@ -151,7 +161,7 @@ const domManager = (() => {
       }
     } else if(e.target && e.target.classList.contains('fa-trash')) {
       if(isThereForm()) return false;
-      if (window.confirm("Are you sure you want to delete this task?")) {
+      if (window.confirm("Are you sure you want to delete this?")) {
         if(item){
           pubsub.publish('deleteTodo', item.id);
         }else {
@@ -235,16 +245,6 @@ const domManager = (() => {
     e.preventDefault();
     doubleHandler(e);
   })
-
-
-const mediaQuery = window.matchMedia('(max-width: 1024px)')
-mediaQuery.addEventListener('change', e => {
-  if(e.matches){
-    document.querySelector('.navbar').classList.add('slide-out-x') 
-  }else {
-    document.querySelector('.navbar').classList.replace('slide-out-x', 'slide-in-x');
-  }
-});
 })();
 
 export {domManager};

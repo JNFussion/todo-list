@@ -144,7 +144,7 @@ const dashboard = (() => {
         allTodos = allTodos.filter(t => isToday(t.dueDate))
         allTodos.sort((a, b) => compareDesc(a.dueDate, b.dueDate))
       case 'upcoming':
-        allTodos = allTodos.filter(t => !isAfter(t.dueDate, startOfTomorrow()) && !isBefore(t.dueDate, add(Date.now, {days: 7})));
+        allTodos = allTodos.filter(t => !isAfter(t.dueDate, add(new Date(), {days: 7})) && !isBefore(t.dueDate, startOfTomorrow()));
         allTodos.sort((a, b) => (orderDesc ? compareDesc(a.dueDate, b.dueDate) : compareAsc(a.dueDate, b.dueDate)) || b.priority.weight - a.priority.weight)
         break;
       case 'priority': 
